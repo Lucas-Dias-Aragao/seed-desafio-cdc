@@ -5,11 +5,9 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@Builder
 @Entity
 @Table(schema = "lojavirtual_db", name = "TB_AUTOR")
 public class Autor {
@@ -24,6 +22,12 @@ public class Autor {
     @Column(name = "DESCRICAO")
     private String descricao;
     @Column(name = "DATA_REGISTRO")
-    private LocalDateTime dataRegistro;
+    private LocalDateTime dataRegistro = LocalDateTime.now();
+
+    public Autor(final String nome, final String email, final String descricao) {
+        this.nome = nome;
+        this.email = email;
+        this.descricao = descricao;
+    }
 
 }

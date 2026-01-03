@@ -14,16 +14,8 @@ public class AutorService {
     private final AutorRepository autorRepository;
 
     public ResponseEntity createUser(final AutorRequestDTO dto) {
-        Autor autor = criarUsuarioEntity(dto);
+        Autor autor = dto.toModel();
         autorRepository.save(autor);
         return ResponseEntity.ok().build();
-    }
-
-    private Autor criarUsuarioEntity(final AutorRequestDTO dto) {
-        return Autor.builder().nome(dto.getNome())
-                .email(dto.getEmail())
-                .descricao(dto.getDescricao())
-                .dataRegistro(dto.getDataRegistro())
-                .build();
     }
 }
