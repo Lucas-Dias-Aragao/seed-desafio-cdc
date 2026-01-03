@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
-public class UsuarioDTO {
+public class AutorRequestDTO {
 
     @NotBlank(message = "O nome não pode ser nulo")
     private String nome;

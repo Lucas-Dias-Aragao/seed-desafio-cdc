@@ -1,7 +1,7 @@
 package com.desafio.seed.cdc.lojavirtual.controller;
 
-import com.desafio.seed.cdc.lojavirtual.model.dto.UsuarioDTO;
-import com.desafio.seed.cdc.lojavirtual.service.UsuarioService;
+import com.desafio.seed.cdc.lojavirtual.model.dto.AutorRequestDTO;
+import com.desafio.seed.cdc.lojavirtual.service.AutorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/usuario")
-public class UsuarioController {
-    private final UsuarioService usuarioService;
+@RequestMapping("/autores")
+public class AutorController {
+    private final AutorService autorService;
     @PostMapping
-    public ResponseEntity cadastrarUsuario(@Valid @RequestBody UsuarioDTO dto) {
-        return usuarioService.createUser(dto);
+    public ResponseEntity cadastrarUsuario(@Valid @RequestBody AutorRequestDTO dto) {
+        return autorService.createUser(dto);
     }
 
 

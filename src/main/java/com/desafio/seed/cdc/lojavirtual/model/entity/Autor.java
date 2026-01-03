@@ -1,12 +1,7 @@
 package com.desafio.seed.cdc.lojavirtual.model.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Past;
 import lombok.*;
-import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDateTime;
 
@@ -15,8 +10,9 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Builder
-@Entity(name = "TB_USUARIO")
-public class Usuario {
+@Entity
+@Table(schema = "lojavirtual_db", name = "TB_AUTOR")
+public class Autor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
