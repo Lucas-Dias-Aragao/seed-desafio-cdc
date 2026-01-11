@@ -25,6 +25,7 @@ public class AutorService {
 
     private void validateAutorRequest(final AutorRequestDTO dto) throws BusinessException{
         boolean existsEmail = autorRepository.existsByEmail(dto.getEmail());
+
         if(existsEmail) {
             throw new BusinessException("Já existe autor cadastrado com esse e-mail", HttpStatus.BAD_REQUEST);
         }
