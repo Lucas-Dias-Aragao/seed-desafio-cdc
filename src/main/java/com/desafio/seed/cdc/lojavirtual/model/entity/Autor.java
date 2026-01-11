@@ -17,7 +17,7 @@ public class Autor {
     private Integer id;
     @Column(name = "NOME")
     private String nome;
-    @Column(name = "EMAIL")
+    @Column(name = "EMAIL", unique = true)
     private String email;
     @Column(name = "DESCRICAO")
     private String descricao;
