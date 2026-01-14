@@ -1,7 +1,7 @@
 package com.desafio.seed.cdc.lojavirtual.controller;
 
-import com.desafio.seed.cdc.lojavirtual.model.dto.AutorRequestDTO;
-import com.desafio.seed.cdc.lojavirtual.service.AutorService;
+import com.desafio.seed.cdc.lojavirtual.model.dto.CategoriaRequestDTO;
+import com.desafio.seed.cdc.lojavirtual.service.CategoriaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -12,15 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/autores")
-public class AutorController {
+@RequestMapping("/categoria")
+public class CategoriaController {
 
-    private final AutorService autorService;
+    private final CategoriaService categoriaService;
 
     @PostMapping
-    public ResponseEntity cadastraNovoUsuario(@Valid @RequestBody AutorRequestDTO dto) {
-        return autorService.createUser(dto);
+     public ResponseEntity cadastraNovaCategoria(@Valid @RequestBody CategoriaRequestDTO dto) {
+        return categoriaService.createCategoria(dto);
     }
-
-
 }

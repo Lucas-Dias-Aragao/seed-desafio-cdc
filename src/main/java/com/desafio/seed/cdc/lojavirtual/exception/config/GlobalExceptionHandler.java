@@ -1,5 +1,6 @@
 package com.desafio.seed.cdc.lojavirtual.exception.config;
 
+import com.desafio.seed.cdc.lojavirtual.exception.BusinessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -13,13 +14,19 @@ import java.util.List;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponse> handleValidationException(MethodArgumentNotValidException ex) {
+    public ResponseEntity<ErrorResponse> handleValidationViolationException(MethodArgumentNotValidException ex) {
         List<FieldErrors> fieldErrors = ex.getBindingResult().getFieldErrors()
                 .stream().map(e -> new FieldErrors(e.getField(), e.getDefaultMessage()))
                 .toList();
 
-        ErrorResponse response = new ErrorResponse(HttpStatus.BAD_REQUEST, "Erro de validação nos campos", fieldErrors);
+        ErrorResponse response = new ErrorResponse("Erro de validação nos campos",HttpStatus.BAD_REQUEST, fieldErrors, fieldErrors.size());
         return ResponseEntity.badRequest().body(response);
+    }
+
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity<ErrorResponse> handleBusinessException(BusinessException ex) {
+        ErrorResponse response = new ErrorResponse(ex.getMensagem());
+        return ResponseEntity.status(ex.getStatus()).body(response);
     }
 
 }
