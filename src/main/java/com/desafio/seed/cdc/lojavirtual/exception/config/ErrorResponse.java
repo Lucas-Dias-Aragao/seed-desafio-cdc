@@ -14,19 +14,26 @@ import java.util.List;
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ErrorResponse {
+
     private HttpStatus status;
+
     private String message;
+
     private List<FieldErrors> fieldErrorsList;
+
     private LocalDateTime timestamp;
+
+    private Integer countErrors;
 
     public ErrorResponse(String message) {
         this.message = message;
         this.timestamp = LocalDateTime.now();
     }
 
-    public ErrorResponse(String message, HttpStatus status, List<FieldErrors> fieldErrorsList) {
+    public ErrorResponse(String message, HttpStatus status, List<FieldErrors> fieldErrorsList, Integer countErrors) {
         this.message = message;
         this.status = status;
         this.fieldErrorsList = fieldErrorsList;
+        this.countErrors = countErrors;
     }
 }

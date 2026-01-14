@@ -15,12 +15,16 @@ public class Autor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     @Column(name = "NOME")
     private String nome;
+
     @Column(name = "EMAIL", unique = true)
     private String email;
+
     @Column(name = "DESCRICAO")
     private String descricao;
+
     @Column(name = "DATA_REGISTRO")
     private LocalDateTime dataRegistro = LocalDateTime.now();
 

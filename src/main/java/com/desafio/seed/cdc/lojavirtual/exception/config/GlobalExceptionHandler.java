@@ -19,7 +19,7 @@ public class GlobalExceptionHandler {
                 .stream().map(e -> new FieldErrors(e.getField(), e.getDefaultMessage()))
                 .toList();
 
-        ErrorResponse response = new ErrorResponse("Erro de validação nos campos",HttpStatus.BAD_REQUEST, fieldErrors);
+        ErrorResponse response = new ErrorResponse("Erro de validação nos campos",HttpStatus.BAD_REQUEST, fieldErrors, fieldErrors.size());
         return ResponseEntity.badRequest().body(response);
     }
 
