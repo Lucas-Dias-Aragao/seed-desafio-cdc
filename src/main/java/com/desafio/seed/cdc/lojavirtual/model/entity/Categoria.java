@@ -6,6 +6,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,4 +29,8 @@ public class Categoria {
 
     @Column(name = "NOME")
     private String nome;
+
+    public Categoria(final String nome) {
+        this.nome = nome;
+    }
 }

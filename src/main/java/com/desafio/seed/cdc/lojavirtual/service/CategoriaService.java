@@ -9,25 +9,27 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 @RequiredArgsConstructor
 public class CategoriaService {
 
     private final CategoriaRepository categoriaRepository;
 
-    public ResponseEntity createCategoria(final CategoriaRequestDTO dto) {
-        String nome = dto.getNome().toLowerCase();
+    public ResponseEntity<?> createCategoria(final CategoriaRequestDTO dto) {
+        validateNomeCategoria(dto.getNome());
 
-        Boolean existsCategoriaNome = categoriaRepository.existsCategoriaByNome(nome);
-
-        if(existsCategoriaNome) {
-            throw new BusinessException("Já existe categoria cadastrada com esse nome", HttpStatus.BAD_REQUEST);
-        }
-
-        Categoria novaCategoria = dto.toModel();
+        Categoria novaCategoria = new Categoria(dto.getNome());
 
         categoriaRepository.save(novaCategoria);
         return ResponseEntity.ok().build();
+    }
+
+    private void validateNomeCategoria(final String nome) {
+        if (Objects.isNull(nome) || nome.isBlank()) {
+            throw new BusinessException("O nome da categoria é obrigatório", HttpStatus.BAD_REQUEST);
+        }
     }
 
 }
