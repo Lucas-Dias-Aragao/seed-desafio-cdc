@@ -18,9 +18,8 @@ public class AutorController {
     private final AutorService autorService;
 
     @PostMapping
-    public ResponseEntity cadastraNovoUsuario(@Valid @RequestBody AutorRequestDTO dto) {
-        return autorService.createUser(dto);
+    public ResponseEntity cadastraNovoAutor(@Valid @RequestBody AutorRequestDTO dto) {
+        return autorService.createAutor(dto);
     }
-
 
 }

@@ -18,7 +18,7 @@ public class CategoriaController {
     private final CategoriaService categoriaService;
 
     @PostMapping
-     public ResponseEntity cadastraNovaCategoria(@Valid @RequestBody CategoriaRequestDTO dto) {
+     public ResponseEntity<?> cadastraNovaCategoria(@Valid @RequestBody CategoriaRequestDTO dto) {
         return categoriaService.createCategoria(dto);
     }
 }
