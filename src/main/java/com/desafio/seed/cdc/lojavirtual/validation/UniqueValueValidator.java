@@ -29,7 +29,7 @@ public class UniqueValueValidator implements ConstraintValidator<UniqueValue, Ob
         var result = query.getResultList();
 
         if(!result.isEmpty()) {
-            throw new IllegalStateException(value + " já está sendo utilizado, por favor, escolha outro.");
+            throw new IllegalStateException(value + " já está sendo utilizado, por favor, escolha outro " + domainAttribute);
         }
 
         return true;
