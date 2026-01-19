@@ -38,6 +38,8 @@ public class CategoriaControllerIT {
 
     private static final String URL_CATEGORIA = "/categoria";
 
+    private static final String FINAL_MSG_NOME_JA_UTILIZADO = " já está sendo utilizado, por favor, escolha outro nome";
+
     @Test
     @DisplayName("Deve criar categoria se nome for válido")
     void deveCriarCategoriaSeNomeForValido() {
@@ -67,7 +69,9 @@ public class CategoriaControllerIT {
 
         assertNotNull(response);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("Já existe categoria cadastrada com esse nome", response.getBody().getMessage());
+
+        String msgEsperada = novaCategoria.getNome() + FINAL_MSG_NOME_JA_UTILIZADO;
+        assertEquals(msgEsperada, response.getBody().getMessage());
 
     }
 

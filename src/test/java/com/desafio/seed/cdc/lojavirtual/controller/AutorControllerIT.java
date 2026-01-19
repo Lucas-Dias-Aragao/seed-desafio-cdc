@@ -33,6 +33,8 @@ public class AutorControllerIT {
     @Autowired
     private TestRestTemplate restTemplate;
 
+    private static final String FINAL_MSG_EMAIL_SENDO_JA_UTILIZADO = " já está sendo utilizado, por favor, escolha outro email";
+
     private static final String URL_AUTOR = "/autores";
 
     @Test
@@ -47,7 +49,9 @@ public class AutorControllerIT {
 
         assertNotNull(response);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("Já existe autor cadastrado com esse e-mail", response.getBody().getMessage());
+
+        String msgEsperada = novoAutor.getEmail() + FINAL_MSG_EMAIL_SENDO_JA_UTILIZADO;
+        assertEquals(msgEsperada, response.getBody().getMessage());
 
     }
 
