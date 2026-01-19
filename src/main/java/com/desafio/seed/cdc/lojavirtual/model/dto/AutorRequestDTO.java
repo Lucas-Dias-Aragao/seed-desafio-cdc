@@ -1,6 +1,7 @@
 package com.desafio.seed.cdc.lojavirtual.model.dto;
 
 import com.desafio.seed.cdc.lojavirtual.model.entity.Autor;
+import com.desafio.seed.cdc.lojavirtual.utils.MessageConstants;
 import com.desafio.seed.cdc.lojavirtual.validation.UniqueValue;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -14,15 +15,15 @@ import org.hibernate.validator.constraints.Length;
 @Builder
 public class AutorRequestDTO {
 
-    @NotBlank(message = "O nome não pode ser nulo")
+    @NotBlank(message = MessageConstants.NOME_OBRIGATORIO)
     private String nome;
 
     @Email
-    @NotBlank(message = "O e-mail não pode ser nulo")
+    @NotBlank(message = MessageConstants.EMAIL_OBRIGATORIO)
     @UniqueValue(domainClass = Autor.class, fieldName = "email")
     private String email;
 
-    @NotBlank(message = "A descrição não pode ser nula")
+    @NotBlank(message = MessageConstants.DESCRICAO_OBRIGATORIA)
     @Length(max = 400)
     private String descricao;
 

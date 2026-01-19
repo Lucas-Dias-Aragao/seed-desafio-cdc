@@ -4,6 +4,7 @@ import com.desafio.seed.cdc.lojavirtual.exception.BusinessException;
 import com.desafio.seed.cdc.lojavirtual.model.dto.CategoriaRequestDTO;
 import com.desafio.seed.cdc.lojavirtual.model.entity.Categoria;
 import com.desafio.seed.cdc.lojavirtual.repository.CategoriaRepository;
+import com.desafio.seed.cdc.lojavirtual.utils.MessageConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,7 @@ public class CategoriaService {
 
     private void validateNomeCategoria(final String nome) {
         if (Objects.isNull(nome) || nome.isBlank()) {
-            throw new BusinessException("O nome da categoria é obrigatório", HttpStatus.BAD_REQUEST);
+            throw new BusinessException(MessageConstants.NOME_OBRIGATORIO, HttpStatus.BAD_REQUEST);
         }
     }
 

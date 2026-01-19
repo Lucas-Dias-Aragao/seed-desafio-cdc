@@ -7,7 +7,7 @@ import lombok.Setter;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Map;
 
 @NoArgsConstructor
 @Getter
@@ -19,7 +19,7 @@ public class ErrorResponse {
 
     private String message;
 
-    private List<FieldErrors> fieldErrorsList;
+    private Map<String, String> fieldErrors;
 
     private LocalDateTime timestamp;
 
@@ -30,10 +30,10 @@ public class ErrorResponse {
         this.timestamp = LocalDateTime.now();
     }
 
-    public ErrorResponse(String message, HttpStatus status, List<FieldErrors> fieldErrorsList, Integer countErrors) {
+    public ErrorResponse(String message, HttpStatus status, Map<String, String> fieldErrors, Integer countErrors) {
         this.message = message;
         this.status = status;
-        this.fieldErrorsList = fieldErrorsList;
+        this.fieldErrors = fieldErrors;
         this.countErrors = countErrors;
     }
 }
