@@ -1,10 +1,10 @@
 package com.desafio.seed.cdc.lojavirtual.controller;
 
 import com.desafio.seed.cdc.lojavirtual.exception.config.ErrorResponse;
-import com.desafio.seed.cdc.lojavirtual.exception.config.FieldErrors;
 import com.desafio.seed.cdc.lojavirtual.model.dto.AutorRequestDTO;
 import com.desafio.seed.cdc.lojavirtual.model.entity.Autor;
 import com.desafio.seed.cdc.lojavirtual.repository.AutorRepository;
+import com.desafio.seed.cdc.lojavirtual.utils.MessageConstants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,11 +17,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
@@ -32,6 +29,8 @@ public class AutorControllerIT {
 
     @Autowired
     private TestRestTemplate restTemplate;
+
+    private static final String FINAL_MSG_EMAIL_JA_SENDO_UTILIZADO = " já está sendo utilizado, por favor, escolha outro email";
 
     private static final String URL_AUTOR = "/autores";
 
@@ -47,7 +46,9 @@ public class AutorControllerIT {
 
         assertNotNull(response);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("Já existe autor cadastrado com esse e-mail", response.getBody().getMessage());
+
+        String msgEsperada = novoAutor.getEmail() + FINAL_MSG_EMAIL_JA_SENDO_UTILIZADO;
+        assertEquals(msgEsperada, response.getBody().getMessage());
 
     }
 
@@ -62,8 +63,9 @@ public class AutorControllerIT {
         assertNotNull(response);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
 
-        List<FieldErrors> errors = response.getBody().getFieldErrorsList();
         assertEquals(2, response.getBody().getCountErrors());
+        assertEquals(MessageConstants.NOME_OBRIGATORIO, response.getBody().getFieldErrors().get("nome"));
+        assertEquals(MessageConstants.EMAIL_OBRIGATORIO, response.getBody().getFieldErrors().get("email"));
     }
 
     @Test
