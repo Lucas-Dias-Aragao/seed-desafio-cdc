@@ -6,6 +6,7 @@ import com.desafio.seed.cdc.lojavirtual.model.entity.Categoria;
 import com.desafio.seed.cdc.lojavirtual.utils.MessageConstants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpEntity;
@@ -26,52 +27,63 @@ public class CategoriaControllerIT extends BaseControllerIT {
 
     private static final String FINAL_MSG_NOME_JA_UTILIZADO = " já está sendo utilizado, por favor, escolha outro nome";
 
-    @Test
-    @DisplayName("Deve criar categoria se nome for válido")
-    void deveCriarCategoriaSeNomeForValido() {
-        String nome = "Teste";
-        CategoriaRequestDTO dto = new CategoriaRequestDTO(nome);
+    @Nested
+    @DisplayName("POST /categoria - 200 OK")
+    class Success {
+        @Test
+        @DisplayName("Deve criar categoria se nome for válido")
+        void deveCriarCategoriaSeNomeForValido() {
+            String nome = "Teste";
+            CategoriaRequestDTO dto = new CategoriaRequestDTO(nome);
 
-        HttpEntity<CategoriaRequestDTO> requestEntity = new HttpEntity<>(dto);
-        ResponseEntity<Void> response = restTemplate.exchange(URL_CATEGORIA, HttpMethod.POST, requestEntity, Void.class);
+            HttpEntity<CategoriaRequestDTO> requestEntity = new HttpEntity<>(dto);
+            ResponseEntity<Void> response = restTemplate.exchange(URL_CATEGORIA, HttpMethod.POST, requestEntity, Void.class);
 
-        assertNotNull(response);
-        assertEquals(HttpStatus.OK, response.getStatusCode());
+            assertNotNull(response);
+            assertEquals(HttpStatus.OK, response.getStatusCode());
 
-        Boolean categoriaCriada = categoriaRepository.existsCategoriaByNome(nome);
-        assertTrue(categoriaCriada);
+            Boolean categoriaCriada = categoriaRepository.existsCategoriaByNome(nome);
+            assertTrue(categoriaCriada);
 
-    }
-
-    @Test
-    @DisplayName("Não deve criar categoria repetido")
-    void naoDeveCriarCategoriaComNomeRepetido() {
-        Categoria novaCategoria = createCategoria("Teste");
-
-        CategoriaRequestDTO dto = new CategoriaRequestDTO(novaCategoria.getNome());
-
-        HttpEntity<CategoriaRequestDTO> requestEntity = new HttpEntity<>(dto);
-        ResponseEntity<ErrorResponse> response = restTemplate.exchange(URL_CATEGORIA, HttpMethod.POST, requestEntity, ErrorResponse.class);
-
-        assertNotNull(response);
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-
-        String msgEsperada = novaCategoria.getNome() + FINAL_MSG_NOME_JA_UTILIZADO;
-        assertEquals(msgEsperada, response.getBody().getMessage());
+        }
 
     }
 
-    @Test
-    @DisplayName("Não deve criar categoria com nome inválido")
-    void naoDeveCriarCategoriaComNomeInvalido() {
-        CategoriaRequestDTO dto = new CategoriaRequestDTO("");
+    @Nested
+    @DisplayName("POST /categoria - 400 BAD REQUEST")
+    class BadRequest {
 
-        HttpEntity<CategoriaRequestDTO> requestEntity = new HttpEntity<>(dto);
-        ResponseEntity<ErrorResponse> response = restTemplate.exchange(URL_CATEGORIA, HttpMethod.POST, requestEntity, ErrorResponse.class);
+        @Test
+        @DisplayName("Não deve criar categoria repetido")
+        void naoDeveCriarCategoriaComNomeRepetido() {
+            Categoria novaCategoria = createCategoria("Teste");
 
-        assertNotNull(response);
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals(MessageConstants.NOME_OBRIGATORIO, response.getBody().getFieldErrors().get("nome"));
+            CategoriaRequestDTO dto = new CategoriaRequestDTO(novaCategoria.getNome());
+
+            HttpEntity<CategoriaRequestDTO> requestEntity = new HttpEntity<>(dto);
+            ResponseEntity<ErrorResponse> response = restTemplate.exchange(URL_CATEGORIA, HttpMethod.POST, requestEntity, ErrorResponse.class);
+
+            assertNotNull(response);
+            assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+
+            String msgEsperada = novaCategoria.getNome() + FINAL_MSG_NOME_JA_UTILIZADO;
+            assertEquals(msgEsperada, response.getBody().getMessage());
+
+        }
+
+        @Test
+        @DisplayName("Não deve criar categoria com nome inválido")
+        void naoDeveCriarCategoriaComNomeInvalido() {
+            CategoriaRequestDTO dto = new CategoriaRequestDTO("");
+
+            HttpEntity<CategoriaRequestDTO> requestEntity = new HttpEntity<>(dto);
+            ResponseEntity<ErrorResponse> response = restTemplate.exchange(URL_CATEGORIA, HttpMethod.POST, requestEntity, ErrorResponse.class);
+
+            assertNotNull(response);
+            assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+            assertEquals(MessageConstants.NOME_OBRIGATORIO, response.getBody().getFieldErrors().get("nome"));
+
+        }
 
     }
 
