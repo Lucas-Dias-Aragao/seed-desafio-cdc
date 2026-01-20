@@ -2,8 +2,10 @@ package com.desafio.seed.cdc.lojavirtual.controller;
 
 import com.desafio.seed.cdc.lojavirtual.exception.config.ErrorResponse;
 import com.desafio.seed.cdc.lojavirtual.model.dto.LivroRequestDTO;
+import com.desafio.seed.cdc.lojavirtual.model.dto.LivroResponseDTO;
 import com.desafio.seed.cdc.lojavirtual.model.entity.Autor;
 import com.desafio.seed.cdc.lojavirtual.model.entity.Categoria;
+import com.desafio.seed.cdc.lojavirtual.model.entity.Livro;
 import com.desafio.seed.cdc.lojavirtual.repository.LivroRepository;
 import com.desafio.seed.cdc.lojavirtual.utils.MessageConstants;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,17 +14,22 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.lang.reflect.ParameterizedType;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
@@ -156,6 +163,52 @@ public class LivroControllerIT extends BaseControllerIT {
             assertEquals(MSG_CATEGORIA_NAO_ENCONTRADA, response.getBody().getMessage());
         }
 
+    }
+
+    @Nested
+    @DisplayName("GET /livros - 200 OK")
+    class Get {
+
+        @Test
+        @DisplayName("Deve retornar uma lista de livros")
+        void deveRetornarUmaListaDeLivros() {
+            Autor autor = createAutor("Jose", "jose@email.com");
+
+            Livro livro = createLivro("Livro 1", "12344-85-695", autor);
+            Livro livro2 = createLivro("Livro 2", "12345-85-695", autor);
+
+            ResponseEntity<List<LivroResponseDTO>> response = restTemplate.exchange(URL_LIVRO, HttpMethod.GET,
+                    null, new ParameterizedTypeReference<List<LivroResponseDTO>>() {}
+            );
+
+            assertNotNull(response);
+            assertEquals(HttpStatus.OK, response.getStatusCode());
+            assertEquals(2, response.getBody().size());
+            assertEquals(livro.getTitulo(), response.getBody().getFirst().getTitulo());
+            assertEquals(livro2.getTitulo(), response.getBody().getLast().getTitulo());
+
+        }
+
+    }
+
+    private Livro createLivro(final String titulo, final String isbn, final Autor autor) {
+        Categoria categoria = createCategoria("Categoria Fake");
+
+        Livro livro = Livro.builder()
+                .titulo(titulo)
+                .resumo("Esse livro deve ser criado com sucesso!!")
+                .sumario(".. sumário válido")
+                .preco(BigDecimal.valueOf(29.90))
+                .qtdPaginas((short) 101)
+                .isbn(isbn)
+                .dataPublicacao(LocalDate.now().plusMonths(1))
+                .autor(autor)
+                .categoria(categoria)
+                .build();
+
+        livro = livroRepository.save(livro);
+        assertNotNull(livro.getId());
+        return livro;
     }
 
     @BeforeEach

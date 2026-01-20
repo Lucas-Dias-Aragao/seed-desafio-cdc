@@ -1,12 +1,15 @@
 package com.desafio.seed.cdc.lojavirtual.service;
 
 import com.desafio.seed.cdc.lojavirtual.model.dto.LivroRequestDTO;
+import com.desafio.seed.cdc.lojavirtual.model.dto.LivroResponseDTO;
 import com.desafio.seed.cdc.lojavirtual.model.entity.Livro;
 import com.desafio.seed.cdc.lojavirtual.repository.LivroRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -21,5 +24,9 @@ public class LivroService {
 
         livroRepository.save(novoLivro);
         return ResponseEntity.ok().build();
+    }
+
+    public List<LivroResponseDTO> listAllLivros() {
+        return livroRepository.listAllLivros();
     }
 }

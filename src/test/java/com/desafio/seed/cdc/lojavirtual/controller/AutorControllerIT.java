@@ -6,6 +6,7 @@ import com.desafio.seed.cdc.lojavirtual.model.entity.Autor;
 import com.desafio.seed.cdc.lojavirtual.utils.MessageConstants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpEntity;
@@ -25,50 +26,62 @@ public class AutorControllerIT extends BaseControllerIT {
 
     private static final String URL_AUTOR = "/autores";
 
-    @Test
-    @DisplayName("Não deve criar autores com e-mail repetidos")
-    void naoDeveCriarAutoresComEmailsIguais() {
-        Autor autor = createAutor("Juninho", "juninho@email.com");
+    @Nested
+    @DisplayName("POST /autores - 200 OK")
+    class Success {
 
-        AutorRequestDTO novoAutor = builderAutorRequest("Autor dois", autor.getEmail());
+        @Test
+        @DisplayName("Deve criar autor se dados forem válidos")
+        void deveCriarAutoresSeDadosForemValidos() {
+            AutorRequestDTO novoAutor = builderAutorRequest("Autor da Silva", "autor@email.com");
 
-        HttpEntity<AutorRequestDTO> requestEntity = new HttpEntity<>(novoAutor);
-        ResponseEntity<ErrorResponse> response = restTemplate.exchange(URL_AUTOR, HttpMethod.POST, requestEntity, ErrorResponse.class);
+            HttpEntity<AutorRequestDTO> requestEntity = new HttpEntity<>(novoAutor);
+            ResponseEntity<Void> response = restTemplate.exchange(URL_AUTOR, HttpMethod.POST, requestEntity, Void.class);
 
-        assertNotNull(response);
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-
-        String msgEsperada = novoAutor.getEmail() + FINAL_MSG_EMAIL_JA_SENDO_UTILIZADO;
-        assertEquals(msgEsperada, response.getBody().getMessage());
+            assertNotNull(response);
+            assertEquals(HttpStatus.OK, response.getStatusCode());
+        }
 
     }
 
-    @Test
-    @DisplayName("Não deve criar autores se dados forem inválidos")
-    void naoDeveCriarAutoresComDadosInvalidos() {
-       AutorRequestDTO novoAutor = builderAutorRequest("", "");
+    @Nested
+    @DisplayName("POST /autores - 400 BAD REQUEST")
+    class BadRequest {
 
-        HttpEntity<AutorRequestDTO> requestEntity = new HttpEntity<>(novoAutor);
-        ResponseEntity<ErrorResponse> response = restTemplate.exchange(URL_AUTOR, HttpMethod.POST, requestEntity, ErrorResponse.class);
+        @Test
+        @DisplayName("Não deve criar autores com e-mail repetidos")
+        void naoDeveCriarAutoresComEmailsIguais() {
+            Autor autor = createAutor("Juninho", "juninho@email.com");
 
-        assertNotNull(response);
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+            AutorRequestDTO novoAutor = builderAutorRequest("Autor dois", autor.getEmail());
 
-        assertEquals(2, response.getBody().getCountErrors());
-        assertEquals(MessageConstants.NOME_OBRIGATORIO, response.getBody().getFieldErrors().get("nome"));
-        assertEquals(MessageConstants.EMAIL_OBRIGATORIO, response.getBody().getFieldErrors().get("email"));
-    }
+            HttpEntity<AutorRequestDTO> requestEntity = new HttpEntity<>(novoAutor);
+            ResponseEntity<ErrorResponse> response = restTemplate.exchange(URL_AUTOR, HttpMethod.POST, requestEntity, ErrorResponse.class);
 
-    @Test
-    @DisplayName("Deve criar autor se dados forem válidos")
-    void deveCriarAutoresSeDadosForemValidos() {
-        AutorRequestDTO novoAutor = builderAutorRequest("Autor da Silva", "autor@email.com");
+            assertNotNull(response);
+            assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
 
-        HttpEntity<AutorRequestDTO> requestEntity = new HttpEntity<>(novoAutor);
-        ResponseEntity<Void> response = restTemplate.exchange(URL_AUTOR, HttpMethod.POST, requestEntity, Void.class);
+            String msgEsperada = novoAutor.getEmail() + FINAL_MSG_EMAIL_JA_SENDO_UTILIZADO;
+            assertEquals(msgEsperada, response.getBody().getMessage());
 
-        assertNotNull(response);
-        assertEquals(HttpStatus.OK, response.getStatusCode());
+        }
+
+        @Test
+        @DisplayName("Não deve criar autores se dados forem inválidos")
+        void naoDeveCriarAutoresComDadosInvalidos() {
+            AutorRequestDTO novoAutor = builderAutorRequest("", "");
+
+            HttpEntity<AutorRequestDTO> requestEntity = new HttpEntity<>(novoAutor);
+            ResponseEntity<ErrorResponse> response = restTemplate.exchange(URL_AUTOR, HttpMethod.POST, requestEntity, ErrorResponse.class);
+
+            assertNotNull(response);
+            assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+
+            assertEquals(2, response.getBody().getCountErrors());
+            assertEquals(MessageConstants.NOME_OBRIGATORIO, response.getBody().getFieldErrors().get("nome"));
+            assertEquals(MessageConstants.EMAIL_OBRIGATORIO, response.getBody().getFieldErrors().get("email"));
+        }
+
     }
 
     private AutorRequestDTO builderAutorRequest(final String nome, final String email) {
