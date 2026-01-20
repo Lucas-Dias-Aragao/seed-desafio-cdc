@@ -5,6 +5,7 @@ import com.desafio.seed.cdc.lojavirtual.model.dto.CategoriaRequestDTO;
 import com.desafio.seed.cdc.lojavirtual.model.entity.Categoria;
 import com.desafio.seed.cdc.lojavirtual.repository.CategoriaRepository;
 import com.desafio.seed.cdc.lojavirtual.utils.MessageConstants;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ public class CategoriaService {
 
     private final CategoriaRepository categoriaRepository;
 
+    @Transactional
     public ResponseEntity<?> createCategoria(final CategoriaRequestDTO dto) {
         validateNomeCategoria(dto.getNome());
 

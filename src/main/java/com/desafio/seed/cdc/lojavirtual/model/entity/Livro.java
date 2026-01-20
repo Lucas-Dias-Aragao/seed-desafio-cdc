@@ -1,5 +1,6 @@
 package com.desafio.seed.cdc.lojavirtual.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,6 +12,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,6 +20,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @NoArgsConstructor
@@ -27,21 +30,25 @@ import java.time.LocalDate;
 @Entity
 @Builder
 @Table(schema = "lojavirtual_db", name = "TB_LIVRO")
-public class Livro extends AbsctractEntity<Integer> {
+public class Livro {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     @Column(name = "TITULO", nullable = false, unique = true)
     private String titulo;
 
     @Column(name = "RESUMO", nullable = false)
-    @Length(max = 500)
+    @Size(max = 500)
     private String resumo;
 
     @Column(name = "SUMARIO")
     private String sumario;
 
     @Column(name = "PRECO", nullable = false)
-    @DecimalMin(value = "20.0", inclusive = true)
-    private Double preco;
+    @Min(20)
+    private BigDecimal preco;
 
     @Column(name = "TOTAL_PAGINAS", nullable = false)
     @Min(value = 100)

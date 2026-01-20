@@ -1,12 +1,13 @@
-package com.desafio.seed.cdc.lojavirtual.validation;
+package com.desafio.seed.cdc.lojavirtual.validation.validators;
 
+import com.desafio.seed.cdc.lojavirtual.validation.annotations.ExistsId;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class UniqueValueValidator implements ConstraintValidator<UniqueValue, Object> {
+public class ExistsIdValidator implements ConstraintValidator<ExistsId, Object> {
 
     private String domainAttribute;
 
@@ -16,23 +17,22 @@ public class UniqueValueValidator implements ConstraintValidator<UniqueValue, Ob
     private EntityManager manager;
 
     @Override
-    public void initialize(UniqueValue params) {
+    public void initialize(ExistsId params) {
         domainAttribute = params.fieldName();
         klass = params.domainClass();
     }
 
     @Override
     public boolean isValid(Object value, ConstraintValidatorContext context) {
-        Query query = manager.createQuery("SELECT 1 FROM " + klass.getName() + " WHERE " + domainAttribute + " = :value");
+        Query query = manager.createQuery("SELECT id FROM " + klass.getName() + " WHERE " + domainAttribute + " = :value");
         query.setParameter("value", value);
 
         var result = query.getResultList();
 
-        if(!result.isEmpty()) {
-            throw new IllegalStateException(value + " já está sendo utilizado, por favor, escolha outro " + domainAttribute);
+        if(result.isEmpty()) {
+            throw new IllegalStateException("Não foi encontrado " +klass.getSimpleName()+ " com o " + domainAttribute + " informado.");
         }
 
         return true;
     }
-
 }

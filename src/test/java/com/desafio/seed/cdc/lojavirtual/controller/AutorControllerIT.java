@@ -3,14 +3,11 @@ package com.desafio.seed.cdc.lojavirtual.controller;
 import com.desafio.seed.cdc.lojavirtual.exception.config.ErrorResponse;
 import com.desafio.seed.cdc.lojavirtual.model.dto.AutorRequestDTO;
 import com.desafio.seed.cdc.lojavirtual.model.entity.Autor;
-import com.desafio.seed.cdc.lojavirtual.repository.AutorRepository;
 import com.desafio.seed.cdc.lojavirtual.utils.MessageConstants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -22,13 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-public class AutorControllerIT {
-
-    @Autowired
-    protected AutorRepository autorRepository;
-
-    @Autowired
-    private TestRestTemplate restTemplate;
+public class AutorControllerIT extends BaseControllerIT {
 
     private static final String FINAL_MSG_EMAIL_JA_SENDO_UTILIZADO = " já está sendo utilizado, por favor, escolha outro email";
 
@@ -74,7 +65,7 @@ public class AutorControllerIT {
         AutorRequestDTO novoAutor = builderAutorRequest("Autor da Silva", "autor@email.com");
 
         HttpEntity<AutorRequestDTO> requestEntity = new HttpEntity<>(novoAutor);
-        ResponseEntity<ErrorResponse> response = restTemplate.exchange(URL_AUTOR, HttpMethod.POST, requestEntity, ErrorResponse.class);
+        ResponseEntity<Void> response = restTemplate.exchange(URL_AUTOR, HttpMethod.POST, requestEntity, Void.class);
 
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -82,14 +73,6 @@ public class AutorControllerIT {
 
     private AutorRequestDTO builderAutorRequest(final String nome, final String email) {
         return AutorRequestDTO.builder().nome(nome).email(email).descricao("Autor criado para testes").build();
-    }
-
-    private Autor createAutor(final String nome, String email) {
-        Autor autor = new Autor(nome, email, "Autor criado para testes");
-        autor = autorRepository.save(autor);
-        assertNotNull(autor.getId());
-
-        return autor;
     }
 
     @BeforeEach
