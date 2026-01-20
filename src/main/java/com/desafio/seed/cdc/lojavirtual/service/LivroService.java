@@ -3,6 +3,7 @@ package com.desafio.seed.cdc.lojavirtual.service;
 import com.desafio.seed.cdc.lojavirtual.model.dto.LivroRequestDTO;
 import com.desafio.seed.cdc.lojavirtual.model.entity.Livro;
 import com.desafio.seed.cdc.lojavirtual.repository.LivroRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ public class LivroService {
 
     private final LivroRepository livroRepository;
 
+    @Transactional
     public ResponseEntity<?> createLivro(final LivroRequestDTO livroDTO) {
 
         Livro novoLivro = livroDTO.toModel();
