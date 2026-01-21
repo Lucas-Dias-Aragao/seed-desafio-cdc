@@ -5,6 +5,7 @@ import com.desafio.seed.cdc.lojavirtual.model.vo.LivroRequestVo;
 import com.desafio.seed.cdc.lojavirtual.model.dto.LivroResponseDTO;
 import com.desafio.seed.cdc.lojavirtual.model.entity.Livro;
 import com.desafio.seed.cdc.lojavirtual.repository.LivroRepository;
+import com.desafio.seed.cdc.lojavirtual.utils.MessageConstants;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -38,7 +39,7 @@ public class LivroService {
         LivroResponseDTO livro = livroRepository.findDetalheLivroById(idLivro);
 
         if(Objects.isNull(livro)) {
-            throw new BusinessException("Livro não encontrado", HttpStatus.NOT_FOUND);
+            throw new BusinessException(MessageConstants.LIVRO_NAO_ENCONTRADO, HttpStatus.NOT_FOUND);
         }
 
         return livro;

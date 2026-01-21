@@ -166,7 +166,7 @@ public class LivroControllerIT extends BaseControllerIT {
 
     @Nested
     @DisplayName("GET /livros - 200 OK")
-    class Get {
+    class GetSuccess {
 
         @Test
         @DisplayName("Deve retornar uma lista de livros")
@@ -185,6 +185,46 @@ public class LivroControllerIT extends BaseControllerIT {
             assertEquals(2, response.getBody().size());
             assertEquals(livro.getTitulo(), response.getBody().getFirst().getTitulo());
             assertEquals(livro2.getTitulo(), response.getBody().getLast().getTitulo());
+
+        }
+
+        @Test
+        @DisplayName("Deve retornar 404 Not Found ao buscar livro por id inexistente")
+        void deveRetornarUmLivroAoBuscarPeloIdSeExistir() {
+            StringBuilder url = new StringBuilder(URL_LIVRO);
+            url.append("/").append(15000);
+
+            ResponseEntity<ErrorResponse> response = restTemplate.exchange(url.toString(), HttpMethod.GET,
+                    null, ErrorResponse.class);
+
+            assertNotNull(response);
+            assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+            assertEquals(MessageConstants.LIVRO_NAO_ENCONTRADO, response.getBody().getMessage());
+
+        }
+
+    }
+
+    @Nested
+    @DisplayName("GET /livros - 404 NOT FOUND")
+    class NotFound {
+
+        @Test
+        @DisplayName("Deve retornar detalhes do livro ao buscar por ID")
+        void deveRetornarUmLivroAoBuscarPeloIdSeExistir() {
+            Autor autor = createAutor("Jose", "jose@email.com");
+            Livro livro = createLivro("Livro 1", "12344-85-695", autor);
+
+            StringBuilder url = new StringBuilder(URL_LIVRO);
+            url.append("/").append(livro.getId());
+
+            ResponseEntity<LivroResponseDTO> response = restTemplate.exchange(url.toString(), HttpMethod.GET,
+                    null, LivroResponseDTO.class);
+
+            assertNotNull(response.getBody());
+            assertEquals(HttpStatus.OK, response.getStatusCode());
+            assertEquals(livro.getTitulo(), response.getBody().getTitulo());
+            assertEquals(autor.getNome(), response.getBody().getAutor().getNome());
 
         }
 
