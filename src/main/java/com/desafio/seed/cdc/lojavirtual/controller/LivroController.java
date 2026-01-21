@@ -33,7 +33,7 @@ public class LivroController {
     }
 
     @GetMapping("/{idLivro}")
-    public LivroResponseDTO findLivroById(@PathVariable("idLivro") final Integer idLivro) {
-        return livroService.findLivroById(idLivro);
+    public LivroResponseDTO findDetalhesLivroById(@PathVariable("idLivro") final Integer idLivro) {
+        return livroService.findDetalhesLivroById(idLivro);
     }
 }
