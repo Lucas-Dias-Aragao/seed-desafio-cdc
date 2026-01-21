@@ -1,4 +1,4 @@
-package com.desafio.seed.cdc.lojavirtual.model.dto;
+package com.desafio.seed.cdc.lojavirtual.model.vo;
 
 import com.desafio.seed.cdc.lojavirtual.model.entity.Autor;
 import com.desafio.seed.cdc.lojavirtual.model.entity.Categoria;
@@ -25,7 +25,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Builder
-public class LivroRequestDTO {
+public class LivroRequestVo {
 
     @NotBlank(message = MessageConstants.TITULO_OBRIGATORIO)
     @UniqueValue(domainClass = Livro.class, fieldName = "titulo")

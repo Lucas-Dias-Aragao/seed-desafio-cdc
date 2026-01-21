@@ -1,6 +1,6 @@
 package com.desafio.seed.cdc.lojavirtual.controller;
 
-import com.desafio.seed.cdc.lojavirtual.model.dto.AutorRequestDTO;
+import com.desafio.seed.cdc.lojavirtual.model.vo.AutorRequestVo;
 import com.desafio.seed.cdc.lojavirtual.service.AutorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ public class AutorController {
     private final AutorService autorService;
 
     @PostMapping
-    public ResponseEntity cadastraNovoAutor(@Valid @RequestBody AutorRequestDTO dto) {
+    public ResponseEntity cadastraNovoAutor(@Valid @RequestBody AutorRequestVo dto) {
         return autorService.createAutor(dto);
     }
 

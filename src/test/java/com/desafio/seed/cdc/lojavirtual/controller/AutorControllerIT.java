@@ -1,7 +1,7 @@
 package com.desafio.seed.cdc.lojavirtual.controller;
 
 import com.desafio.seed.cdc.lojavirtual.exception.config.ErrorResponse;
-import com.desafio.seed.cdc.lojavirtual.model.dto.AutorRequestDTO;
+import com.desafio.seed.cdc.lojavirtual.model.vo.AutorRequestVo;
 import com.desafio.seed.cdc.lojavirtual.model.entity.Autor;
 import com.desafio.seed.cdc.lojavirtual.utils.MessageConstants;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,9 +33,9 @@ public class AutorControllerIT extends BaseControllerIT {
         @Test
         @DisplayName("Deve criar autor se dados forem válidos")
         void deveCriarAutoresSeDadosForemValidos() {
-            AutorRequestDTO novoAutor = builderAutorRequest("Autor da Silva", "autor@email.com");
+            AutorRequestVo novoAutor = builderAutorRequest("Autor da Silva", "autor@email.com");
 
-            HttpEntity<AutorRequestDTO> requestEntity = new HttpEntity<>(novoAutor);
+            HttpEntity<AutorRequestVo> requestEntity = new HttpEntity<>(novoAutor);
             ResponseEntity<Void> response = restTemplate.exchange(URL_AUTOR, HttpMethod.POST, requestEntity, Void.class);
 
             assertNotNull(response);
@@ -53,9 +53,9 @@ public class AutorControllerIT extends BaseControllerIT {
         void naoDeveCriarAutoresComEmailsIguais() {
             Autor autor = createAutor("Juninho", "juninho@email.com");
 
-            AutorRequestDTO novoAutor = builderAutorRequest("Autor dois", autor.getEmail());
+            AutorRequestVo novoAutor = builderAutorRequest("Autor dois", autor.getEmail());
 
-            HttpEntity<AutorRequestDTO> requestEntity = new HttpEntity<>(novoAutor);
+            HttpEntity<AutorRequestVo> requestEntity = new HttpEntity<>(novoAutor);
             ResponseEntity<ErrorResponse> response = restTemplate.exchange(URL_AUTOR, HttpMethod.POST, requestEntity, ErrorResponse.class);
 
             assertNotNull(response);
@@ -69,9 +69,9 @@ public class AutorControllerIT extends BaseControllerIT {
         @Test
         @DisplayName("Não deve criar autores se dados forem inválidos")
         void naoDeveCriarAutoresComDadosInvalidos() {
-            AutorRequestDTO novoAutor = builderAutorRequest("", "");
+            AutorRequestVo novoAutor = builderAutorRequest("", "");
 
-            HttpEntity<AutorRequestDTO> requestEntity = new HttpEntity<>(novoAutor);
+            HttpEntity<AutorRequestVo> requestEntity = new HttpEntity<>(novoAutor);
             ResponseEntity<ErrorResponse> response = restTemplate.exchange(URL_AUTOR, HttpMethod.POST, requestEntity, ErrorResponse.class);
 
             assertNotNull(response);
@@ -84,8 +84,8 @@ public class AutorControllerIT extends BaseControllerIT {
 
     }
 
-    private AutorRequestDTO builderAutorRequest(final String nome, final String email) {
-        return AutorRequestDTO.builder().nome(nome).email(email).descricao("Autor criado para testes").build();
+    private AutorRequestVo builderAutorRequest(final String nome, final String email) {
+        return AutorRequestVo.builder().nome(nome).email(email).descricao("Autor criado para testes").build();
     }
 
     @BeforeEach

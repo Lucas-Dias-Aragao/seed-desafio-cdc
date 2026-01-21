@@ -1,6 +1,6 @@
 package com.desafio.seed.cdc.lojavirtual.service;
 
-import com.desafio.seed.cdc.lojavirtual.model.dto.LivroRequestDTO;
+import com.desafio.seed.cdc.lojavirtual.model.vo.LivroRequestVo;
 import com.desafio.seed.cdc.lojavirtual.model.dto.LivroResponseDTO;
 import com.desafio.seed.cdc.lojavirtual.model.entity.Livro;
 import com.desafio.seed.cdc.lojavirtual.repository.LivroRepository;
@@ -18,7 +18,7 @@ public class LivroService {
     private final LivroRepository livroRepository;
 
     @Transactional
-    public ResponseEntity<?> createLivro(final LivroRequestDTO livroDTO) {
+    public ResponseEntity<?> createLivro(final LivroRequestVo livroDTO) {
 
         Livro novoLivro = livroDTO.toModel();
 
@@ -28,5 +28,9 @@ public class LivroService {
 
     public List<LivroResponseDTO> listAllLivros() {
         return livroRepository.listAllLivros();
+    }
+
+    public LivroResponseDTO findLivroById(final Integer idLivro) {
+        return null;
     }
 }

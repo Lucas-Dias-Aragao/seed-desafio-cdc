@@ -1,7 +1,7 @@
 package com.desafio.seed.cdc.lojavirtual.service;
 
 import com.desafio.seed.cdc.lojavirtual.exception.BusinessException;
-import com.desafio.seed.cdc.lojavirtual.model.dto.AutorRequestDTO;
+import com.desafio.seed.cdc.lojavirtual.model.vo.AutorRequestVo;
 import com.desafio.seed.cdc.lojavirtual.model.entity.Autor;
 import com.desafio.seed.cdc.lojavirtual.repository.AutorRepository;
 import jakarta.transaction.Transactional;
@@ -16,7 +16,7 @@ public class AutorService {
     private final AutorRepository autorRepository;
 
     @Transactional
-    public ResponseEntity<?> createAutor(final AutorRequestDTO dto) throws BusinessException {
+    public ResponseEntity<?> createAutor(final AutorRequestVo dto) throws BusinessException {
         Autor autor = dto.toModel();
         autorRepository.save(autor);
         return ResponseEntity.ok().build();
