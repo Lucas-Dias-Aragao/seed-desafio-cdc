@@ -1,4 +1,4 @@
-package com.desafio.seed.cdc.lojavirtual.model.dto;
+package com.desafio.seed.cdc.lojavirtual.model.vo;
 
 import com.desafio.seed.cdc.lojavirtual.model.entity.Autor;
 import com.desafio.seed.cdc.lojavirtual.utils.MessageConstants;
@@ -13,7 +13,7 @@ import org.hibernate.validator.constraints.Length;
 @Getter
 @Setter
 @Builder
-public class AutorRequestDTO {
+public class AutorRequestVo {
 
     @NotBlank(message = MessageConstants.NOME_OBRIGATORIO)
     private String nome;

@@ -1,7 +1,7 @@
 package com.desafio.seed.cdc.lojavirtual.controller;
 
 import com.desafio.seed.cdc.lojavirtual.exception.config.ErrorResponse;
-import com.desafio.seed.cdc.lojavirtual.model.dto.LivroRequestDTO;
+import com.desafio.seed.cdc.lojavirtual.model.vo.LivroRequestVo;
 import com.desafio.seed.cdc.lojavirtual.model.dto.LivroResponseDTO;
 import com.desafio.seed.cdc.lojavirtual.model.entity.Autor;
 import com.desafio.seed.cdc.lojavirtual.model.entity.Categoria;
@@ -21,7 +21,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.lang.reflect.ParameterizedType;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -54,7 +53,7 @@ public class LivroControllerIT extends BaseControllerIT {
             Autor autor = createAutor("Jose", "jose@email.com");
             Categoria categoria = createCategoria("Categoria Fake");
 
-            LivroRequestDTO novoLivroDTO = LivroRequestDTO.builder()
+            LivroRequestVo novoLivroDTO = LivroRequestVo.builder()
                     .titulo("Um livro criado")
                     .resumo("Esse livro deve ser criado com sucesso!!")
                     .sumario(".. sumário válido")
@@ -66,7 +65,7 @@ public class LivroControllerIT extends BaseControllerIT {
                     .categoriaId(categoria.getId())
                     .build();
 
-            HttpEntity<LivroRequestDTO> requestEntity = new HttpEntity<>(novoLivroDTO);
+            HttpEntity<LivroRequestVo> requestEntity = new HttpEntity<>(novoLivroDTO);
             ResponseEntity<Void> response = restTemplate.exchange(URL_LIVRO, HttpMethod.POST, requestEntity, Void.class);
 
             assertNotNull(response);
@@ -84,7 +83,7 @@ public class LivroControllerIT extends BaseControllerIT {
             Autor autor = createAutor("Jose", "jose@email.com");
             Categoria categoria = createCategoria("Categoria Fake");
 
-            LivroRequestDTO novoLivroDTO = LivroRequestDTO.builder()
+            LivroRequestVo novoLivroDTO = LivroRequestVo.builder()
                     .titulo("")
                     .resumo("")
                     .preco(null)
@@ -95,7 +94,7 @@ public class LivroControllerIT extends BaseControllerIT {
                     .categoriaId(categoria.getId())
                     .build();
 
-            HttpEntity<LivroRequestDTO> requestEntity = new HttpEntity<>(novoLivroDTO);
+            HttpEntity<LivroRequestVo> requestEntity = new HttpEntity<>(novoLivroDTO);
             ResponseEntity<ErrorResponse> response = restTemplate.exchange(URL_LIVRO, HttpMethod.POST, requestEntity, ErrorResponse.class);
 
             assertNotNull(response);
@@ -118,7 +117,7 @@ public class LivroControllerIT extends BaseControllerIT {
         void naoDeveCriarLivroSeIdAutorForInexistente() {
             Categoria categoria = createCategoria("Categoria Fake");
 
-            LivroRequestDTO novoLivroDTO = LivroRequestDTO.builder()
+            LivroRequestVo novoLivroDTO = LivroRequestVo.builder()
                     .titulo("Um livro criado")
                     .resumo("Esse livro deve ser criado com sucesso!!")
                     .sumario(".. sumário válido")
@@ -130,7 +129,7 @@ public class LivroControllerIT extends BaseControllerIT {
                     .categoriaId(categoria.getId())
                     .build();
 
-            HttpEntity<LivroRequestDTO> requestEntity = new HttpEntity<>(novoLivroDTO);
+            HttpEntity<LivroRequestVo> requestEntity = new HttpEntity<>(novoLivroDTO);
             ResponseEntity<ErrorResponse> response = restTemplate.exchange(URL_LIVRO, HttpMethod.POST, requestEntity, ErrorResponse.class);
 
             assertNotNull(response);
@@ -143,7 +142,7 @@ public class LivroControllerIT extends BaseControllerIT {
         void naoDeveCriarLivroSeIdCategoriaForInexistente() {
             Autor autor = createAutor("Jose", "jose@email.com");
 
-            LivroRequestDTO novoLivroDTO = LivroRequestDTO.builder()
+            LivroRequestVo novoLivroDTO = LivroRequestVo.builder()
                     .titulo("Um livro criado")
                     .resumo("Esse livro deve ser criado com sucesso!!")
                     .sumario(".. sumário válido")
@@ -155,7 +154,7 @@ public class LivroControllerIT extends BaseControllerIT {
                     .categoriaId(12300)
                     .build();
 
-            HttpEntity<LivroRequestDTO> requestEntity = new HttpEntity<>(novoLivroDTO);
+            HttpEntity<LivroRequestVo> requestEntity = new HttpEntity<>(novoLivroDTO);
             ResponseEntity<ErrorResponse> response = restTemplate.exchange(URL_LIVRO, HttpMethod.POST, requestEntity, ErrorResponse.class);
 
             assertNotNull(response);
@@ -167,7 +166,7 @@ public class LivroControllerIT extends BaseControllerIT {
 
     @Nested
     @DisplayName("GET /livros - 200 OK")
-    class Get {
+    class GetSuccess {
 
         @Test
         @DisplayName("Deve retornar uma lista de livros")
@@ -186,6 +185,46 @@ public class LivroControllerIT extends BaseControllerIT {
             assertEquals(2, response.getBody().size());
             assertEquals(livro.getTitulo(), response.getBody().getFirst().getTitulo());
             assertEquals(livro2.getTitulo(), response.getBody().getLast().getTitulo());
+
+        }
+
+        @Test
+        @DisplayName("Deve retornar 404 Not Found ao buscar livro por id inexistente")
+        void deveRetornarUmLivroAoBuscarPeloIdSeExistir() {
+            StringBuilder url = new StringBuilder(URL_LIVRO);
+            url.append("/").append(15000);
+
+            ResponseEntity<ErrorResponse> response = restTemplate.exchange(url.toString(), HttpMethod.GET,
+                    null, ErrorResponse.class);
+
+            assertNotNull(response);
+            assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+            assertEquals(MessageConstants.LIVRO_NAO_ENCONTRADO, response.getBody().getMessage());
+
+        }
+
+    }
+
+    @Nested
+    @DisplayName("GET /livros - 404 NOT FOUND")
+    class NotFound {
+
+        @Test
+        @DisplayName("Deve retornar detalhes do livro ao buscar por ID")
+        void deveRetornarUmLivroAoBuscarPeloIdSeExistir() {
+            Autor autor = createAutor("Jose", "jose@email.com");
+            Livro livro = createLivro("Livro 1", "12344-85-695", autor);
+
+            StringBuilder url = new StringBuilder(URL_LIVRO);
+            url.append("/").append(livro.getId());
+
+            ResponseEntity<LivroResponseDTO> response = restTemplate.exchange(url.toString(), HttpMethod.GET,
+                    null, LivroResponseDTO.class);
+
+            assertNotNull(response.getBody());
+            assertEquals(HttpStatus.OK, response.getStatusCode());
+            assertEquals(livro.getTitulo(), response.getBody().getTitulo());
+            assertEquals(autor.getNome(), response.getBody().getAutor().getNome());
 
         }
 

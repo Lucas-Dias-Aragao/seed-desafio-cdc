@@ -1,6 +1,6 @@
 package com.desafio.seed.cdc.lojavirtual.controller;
 
-import com.desafio.seed.cdc.lojavirtual.model.dto.CategoriaRequestDTO;
+import com.desafio.seed.cdc.lojavirtual.model.vo.CategoriaRequestVo;
 import com.desafio.seed.cdc.lojavirtual.service.CategoriaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ public class CategoriaController {
     private final CategoriaService categoriaService;
 
     @PostMapping
-     public ResponseEntity<?> cadastraNovaCategoria(@Valid @RequestBody CategoriaRequestDTO dto) {
+     public ResponseEntity<?> cadastraNovaCategoria(@Valid @RequestBody CategoriaRequestVo dto) {
         return categoriaService.createCategoria(dto);
     }
 }

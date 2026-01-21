@@ -1,4 +1,4 @@
-package com.desafio.seed.cdc.lojavirtual.model.dto;
+package com.desafio.seed.cdc.lojavirtual.model.vo;
 
 import com.desafio.seed.cdc.lojavirtual.model.entity.Categoria;
 import com.desafio.seed.cdc.lojavirtual.utils.MessageConstants;
@@ -13,7 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class CategoriaRequestDTO {
+public class CategoriaRequestVo {
 
     @NotBlank(message = MessageConstants.NOME_OBRIGATORIO)
     @UniqueValue(domainClass = Categoria.class, fieldName = "nome")

@@ -1,7 +1,7 @@
 package com.desafio.seed.cdc.lojavirtual.controller;
 
 import com.desafio.seed.cdc.lojavirtual.exception.config.ErrorResponse;
-import com.desafio.seed.cdc.lojavirtual.model.dto.CategoriaRequestDTO;
+import com.desafio.seed.cdc.lojavirtual.model.vo.CategoriaRequestVo;
 import com.desafio.seed.cdc.lojavirtual.model.entity.Categoria;
 import com.desafio.seed.cdc.lojavirtual.utils.MessageConstants;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,9 +34,9 @@ public class CategoriaControllerIT extends BaseControllerIT {
         @DisplayName("Deve criar categoria se nome for válido")
         void deveCriarCategoriaSeNomeForValido() {
             String nome = "Teste";
-            CategoriaRequestDTO dto = new CategoriaRequestDTO(nome);
+            CategoriaRequestVo dto = new CategoriaRequestVo(nome);
 
-            HttpEntity<CategoriaRequestDTO> requestEntity = new HttpEntity<>(dto);
+            HttpEntity<CategoriaRequestVo> requestEntity = new HttpEntity<>(dto);
             ResponseEntity<Void> response = restTemplate.exchange(URL_CATEGORIA, HttpMethod.POST, requestEntity, Void.class);
 
             assertNotNull(response);
@@ -58,9 +58,9 @@ public class CategoriaControllerIT extends BaseControllerIT {
         void naoDeveCriarCategoriaComNomeRepetido() {
             Categoria novaCategoria = createCategoria("Teste");
 
-            CategoriaRequestDTO dto = new CategoriaRequestDTO(novaCategoria.getNome());
+            CategoriaRequestVo dto = new CategoriaRequestVo(novaCategoria.getNome());
 
-            HttpEntity<CategoriaRequestDTO> requestEntity = new HttpEntity<>(dto);
+            HttpEntity<CategoriaRequestVo> requestEntity = new HttpEntity<>(dto);
             ResponseEntity<ErrorResponse> response = restTemplate.exchange(URL_CATEGORIA, HttpMethod.POST, requestEntity, ErrorResponse.class);
 
             assertNotNull(response);
@@ -74,9 +74,9 @@ public class CategoriaControllerIT extends BaseControllerIT {
         @Test
         @DisplayName("Não deve criar categoria com nome inválido")
         void naoDeveCriarCategoriaComNomeInvalido() {
-            CategoriaRequestDTO dto = new CategoriaRequestDTO("");
+            CategoriaRequestVo dto = new CategoriaRequestVo("");
 
-            HttpEntity<CategoriaRequestDTO> requestEntity = new HttpEntity<>(dto);
+            HttpEntity<CategoriaRequestVo> requestEntity = new HttpEntity<>(dto);
             ResponseEntity<ErrorResponse> response = restTemplate.exchange(URL_CATEGORIA, HttpMethod.POST, requestEntity, ErrorResponse.class);
 
             assertNotNull(response);

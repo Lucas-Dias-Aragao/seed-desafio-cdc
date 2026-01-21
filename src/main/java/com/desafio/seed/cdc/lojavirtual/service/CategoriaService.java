@@ -1,7 +1,7 @@
 package com.desafio.seed.cdc.lojavirtual.service;
 
 import com.desafio.seed.cdc.lojavirtual.exception.BusinessException;
-import com.desafio.seed.cdc.lojavirtual.model.dto.CategoriaRequestDTO;
+import com.desafio.seed.cdc.lojavirtual.model.vo.CategoriaRequestVo;
 import com.desafio.seed.cdc.lojavirtual.model.entity.Categoria;
 import com.desafio.seed.cdc.lojavirtual.repository.CategoriaRepository;
 import com.desafio.seed.cdc.lojavirtual.utils.MessageConstants;
@@ -20,7 +20,7 @@ public class CategoriaService {
     private final CategoriaRepository categoriaRepository;
 
     @Transactional
-    public ResponseEntity<?> createCategoria(final CategoriaRequestDTO dto) {
+    public ResponseEntity<?> createCategoria(final CategoriaRequestVo dto) {
         validateNomeCategoria(dto.getNome());
 
         Categoria novaCategoria = new Categoria(dto.getNome());

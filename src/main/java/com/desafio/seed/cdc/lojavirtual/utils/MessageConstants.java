@@ -32,4 +32,5 @@ public class MessageConstants {
 
     public static final String AUTOR_NAO_INFORMADO = "Por favor, informe o autor.";
 
+    public static final String LIVRO_NAO_ENCONTRADO = "Livro não encontrado";
 }
