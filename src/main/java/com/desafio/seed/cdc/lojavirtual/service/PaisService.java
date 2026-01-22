@@ -39,13 +39,21 @@ public class PaisService {
         return pais.get();
     }
 
-    public Boolean validaSePaisPossuiEstado(final Integer idPais) {
-        boolean existsPais = paisRepository.existsById(idPais);
+    public void validaRelacaoPaisEEstado(final Integer paisId, final Integer estadoId) {
+        boolean existsPais = paisRepository.existsById(paisId);
 
         if(!existsPais) {
             throw new BusinessException(MessageConstants.PAIS_NAO_ENCONTRADO, HttpStatus.NOT_FOUND);
         }
 
-        return paisRepository.existsEstadoByIdPais(idPais);
+        Boolean existeEstado = paisRepository.existsEstadoByIdPais(paisId);
+        if(existeEstado && estadoId == null) {
+            throw new BusinessException("Informe o Estado para prosseguir com o pedido.", HttpStatus.BAD_REQUEST);
+        }
+
+        Boolean estadoPertenceAoPais = paisRepository.existsEstadoIdAssocidoAoPais(paisId, estadoId);
+        if(!estadoPertenceAoPais && estadoId != null) {
+            throw new BusinessException("O Estado informado não pertence ao País informado.", HttpStatus.BAD_REQUEST);
+        }
     }
 }

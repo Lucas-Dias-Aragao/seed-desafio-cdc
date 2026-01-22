@@ -15,6 +15,14 @@ public interface PaisRepository extends JpaRepository<Pais, Integer> {
             + "FROM Pais pais "
             + "LEFT JOIN Estado estado "
             + "ON estado.pais.id = pais.id "
-            + "WHERE pais.id = :idPais")
-    Boolean existsEstadoByIdPais(@Param("idPais") final Integer idPais);
+            + "WHERE pais.id = :paisId")
+    Boolean existsEstadoByIdPais(@Param("paisId") final Integer paisId);
+
+    @Query("SELECT COUNT(estado) > 0 "
+            + "FROM Pais pais "
+            + "LEFT JOIN Estado estado "
+            + "ON estado.pais.id = pais.id "
+            + "WHERE pais.id = :paisId "
+            + "AND estado.id = :estadoId")
+    Boolean existsEstadoIdAssocidoAoPais(@Param("paisId") Integer paisId, @Param("estadoId") Integer estadoId);
 }
