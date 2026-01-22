@@ -1,4 +1,4 @@
-package com.desafio.seed.cdc.lojavirtual.model.dto;
+package com.desafio.seed.cdc.lojavirtual.model.vo;
 
 import com.desafio.seed.cdc.lojavirtual.model.entity.Estado;
 import com.desafio.seed.cdc.lojavirtual.model.entity.Pais;
@@ -14,7 +14,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class EstadoRequestDTO {
+public class EstadoRequestVo {
+
+    private Integer id;
 
     @NotBlank(message = MessageConstants.NOME_OBRIGATORIO)
     @UniqueValue(domainClass = Estado.class, fieldName = "nome")

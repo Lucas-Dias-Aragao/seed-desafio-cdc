@@ -1,6 +1,6 @@
 package com.desafio.seed.cdc.lojavirtual.service;
 
-import com.desafio.seed.cdc.lojavirtual.model.dto.EstadoRequestDTO;
+import com.desafio.seed.cdc.lojavirtual.model.vo.EstadoRequestVo;
 import com.desafio.seed.cdc.lojavirtual.model.entity.Estado;
 import com.desafio.seed.cdc.lojavirtual.model.entity.Pais;
 import com.desafio.seed.cdc.lojavirtual.repository.EstadoRepository;
@@ -18,7 +18,7 @@ public class EstadoService {
     private final PaisService paisService;
 
 
-    public ResponseEntity<?> createEstado(@Valid EstadoRequestDTO dto) {
+    public ResponseEntity<?> createEstado(@Valid EstadoRequestVo dto) {
         Pais pais = paisService.getPaisExistente(dto.getIdPais());
         Estado novoEstado = new Estado(dto.getNome(), pais);
 

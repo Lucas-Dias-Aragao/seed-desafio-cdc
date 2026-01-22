@@ -34,5 +34,27 @@ public class MessageConstants {
 
     public static final String LIVRO_NAO_ENCONTRADO = "Livro não encontrado";
 
-    public static final String PAIS_OBRIGATORIO = "Por favor, informe o país que o estado pertence.";
+    public static final String PAIS_OBRIGATORIO = "Por favor, informe o país.";
+
+    public static final String EMAIL_INVALIDO = "O e-mail informado está com formato inválido";
+
+    public static final String SOBRENOME_OBRIGATORIO = "Por favor, informe o sobrenome.";
+
+    public static final String DOCUMENTO_OBRIGATORIO = "Por favor, informe um documento CPF ou CNPJ.";
+
+    public static final String ENDERECO_OBRIGATORIO = "Informe o endereço completo.";
+
+    public static final String LOGRADOURO_OBRIGATORIO = "Por favor, informe o logradouro.";
+
+    public static final String CEP_OBRIGATORIO = "Por favor, informe o CEP.";
+
+    public static final String COMPLEMENTO_OBRIGATORIO = "Por favor, informe um complemento.";
+
+    public static final String MUNICIPIO_OBRIGATORIO = "Por favor, informe o município.";
+
+    public static final String TELEFONE_OBRIGATORIO = "Por favor, informe um telefone para contato.";
+
+    public static final String ESTADO_NAO_INFORMADO = "Informe também o estado.";
+
+    public static final String PAIS_NAO_ENCONTRADO = "País não encontrado.";
 }
