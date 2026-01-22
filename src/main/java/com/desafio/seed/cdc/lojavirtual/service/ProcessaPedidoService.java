@@ -19,10 +19,6 @@ public class ProcessaPedidoService {
     }
 
     private void validateDadosDoPedido(final NovoPedidoRequestVo pedidoRequest) {
-        Boolean existEstadoParaOPais = paisService.validaSePaisPossuiEstado(pedidoRequest.getPaisId());
-
-        if(existEstadoParaOPais && pedidoRequest.getEstadoId() == null) {
-            throw new BusinessException("Informe o Estado para prosseguir com o pedido.", HttpStatus.BAD_REQUEST);
-        }
+        paisService.validaRelacaoPaisEEstado(pedidoRequest.getPaisId(), pedidoRequest.getEstadoId());
     }
 }
