@@ -189,27 +189,6 @@ public class LivroControllerIT extends BaseControllerIT {
         }
 
         @Test
-        @DisplayName("Deve retornar 404 Not Found ao buscar livro por id inexistente")
-        void deveRetornarUmLivroAoBuscarPeloIdSeExistir() {
-            StringBuilder url = new StringBuilder(URL_LIVRO);
-            url.append("/").append(15000);
-
-            ResponseEntity<ErrorResponse> response = restTemplate.exchange(url.toString(), HttpMethod.GET,
-                    null, ErrorResponse.class);
-
-            assertNotNull(response);
-            assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-            assertEquals(MessageConstants.LIVRO_NAO_ENCONTRADO, response.getBody().getMessage());
-
-        }
-
-    }
-
-    @Nested
-    @DisplayName("GET /livros - 404 NOT FOUND")
-    class NotFound {
-
-        @Test
         @DisplayName("Deve retornar detalhes do livro ao buscar por ID")
         void deveRetornarUmLivroAoBuscarPeloIdSeExistir() {
             Autor autor = createAutor("Jose", "jose@email.com");
@@ -225,6 +204,28 @@ public class LivroControllerIT extends BaseControllerIT {
             assertEquals(HttpStatus.OK, response.getStatusCode());
             assertEquals(livro.getTitulo(), response.getBody().getTitulo());
             assertEquals(autor.getNome(), response.getBody().getAutor().getNome());
+
+        }
+
+
+    }
+
+    @Nested
+    @DisplayName("GET /livros - 404 NOT FOUND")
+    class NotFound {
+
+        @Test
+        @DisplayName("Deve retornar 404 Not Found ao buscar livro por id inexistente")
+        void deveRetornarNotFoundAoBuscarPorIdInexistente() {
+            StringBuilder url = new StringBuilder(URL_LIVRO);
+            url.append("/").append(15000);
+
+            ResponseEntity<ErrorResponse> response = restTemplate.exchange(url.toString(), HttpMethod.GET,
+                    null, ErrorResponse.class);
+
+            assertNotNull(response);
+            assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+            assertEquals(MessageConstants.LIVRO_NAO_ENCONTRADO, response.getBody().getMessage());
 
         }
 
