@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -50,6 +51,7 @@ public class LivroResponseDTO {
         this.sumario = sumario;
         this.resumo = resumo;
         this.titulo = titulo;
-        this.autor = AutorDto.builder().nome(nomeAutor).descricao(descricaoAutor).build();
+        this.autor = new AutorDto(nomeAutor, descricaoAutor);
     }
+
 }
