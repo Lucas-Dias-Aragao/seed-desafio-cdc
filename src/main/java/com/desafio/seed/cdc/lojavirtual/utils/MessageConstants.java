@@ -40,10 +40,6 @@ public class MessageConstants {
 
     public static final String SOBRENOME_OBRIGATORIO = "Por favor, informe o sobrenome.";
 
-    public static final String DOCUMENTO_OBRIGATORIO = "Por favor, informe um documento CPF ou CNPJ.";
-
-    public static final String ENDERECO_OBRIGATORIO = "Informe o endereço completo.";
-
     public static final String LOGRADOURO_OBRIGATORIO = "Por favor, informe o logradouro.";
 
     public static final String CEP_OBRIGATORIO = "Por favor, informe o CEP.";
@@ -57,4 +53,12 @@ public class MessageConstants {
     public static final String ESTADO_NAO_INFORMADO = "Informe também o estado.";
 
     public static final String PAIS_NAO_ENCONTRADO = "País não encontrado.";
+
+    public static final String VALOR_TOTAL_INVALIDO = "Total do pedido é inválido.";
+
+    public static final String DEVE_HAVER_PELO_MENOS_UM_ITEM = "O pedido deve possuir pelo menos um item válido.";
+
+    public static final String QUANTIDADE_INVALIDA = "A quantidade informada é inválida.";
+
+    public static final String ESTADO_NAO_ENCONTRADO = "Estado não encontrado.";
 }

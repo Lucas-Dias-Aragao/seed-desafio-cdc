@@ -7,6 +7,7 @@ import com.desafio.seed.cdc.lojavirtual.model.entity.Livro;
 import com.desafio.seed.cdc.lojavirtual.repository.LivroRepository;
 import com.desafio.seed.cdc.lojavirtual.utils.MessageConstants;
 import jakarta.transaction.Transactional;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,5 +44,10 @@ public class LivroService {
         }
 
         return livro;
+    }
+
+    public Livro getLivroById(final Integer idLivro) {
+        return livroRepository.findById(idLivro)
+                .orElseThrow(() -> new BusinessException(MessageConstants.LIVRO_NAO_ENCONTRADO, HttpStatus.NOT_FOUND));
     }
 }
