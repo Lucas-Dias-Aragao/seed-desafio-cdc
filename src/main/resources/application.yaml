@@ -20,3 +20,10 @@ spring:
       hibernate:
         format_sql: true
 
+app:
+  url:
+    base: "http://localhost:3010"
+    pedido: "/pedido/"
+
+
+

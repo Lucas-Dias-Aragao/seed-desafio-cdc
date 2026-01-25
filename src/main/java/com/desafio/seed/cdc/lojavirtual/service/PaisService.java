@@ -1,8 +1,11 @@
 package com.desafio.seed.cdc.lojavirtual.service;
 
 import com.desafio.seed.cdc.lojavirtual.exception.BusinessException;
+import com.desafio.seed.cdc.lojavirtual.model.context.PaisEstadoContext;
+import com.desafio.seed.cdc.lojavirtual.model.entity.Estado;
 import com.desafio.seed.cdc.lojavirtual.model.vo.PaisRequestVo;
 import com.desafio.seed.cdc.lojavirtual.model.entity.Pais;
+import com.desafio.seed.cdc.lojavirtual.repository.EstadoRepository;
 import com.desafio.seed.cdc.lojavirtual.repository.PaisRepository;
 import com.desafio.seed.cdc.lojavirtual.utils.MessageConstants;
 import jakarta.transaction.Transactional;
@@ -18,6 +21,8 @@ import java.util.Optional;
 public class PaisService {
 
     private final PaisRepository paisRepository;
+
+    private final EstadoRepository estadoRepository;
 
     @Transactional
     public ResponseEntity<?> createPais(final PaisRequestVo dto) {
@@ -39,21 +44,21 @@ public class PaisService {
         return pais.get();
     }
 
-    public void validaRelacaoPaisEEstado(final Integer paisId, final Integer estadoId) {
-        boolean existsPais = paisRepository.existsById(paisId);
-
-        if(!existsPais) {
-            throw new BusinessException(MessageConstants.PAIS_NAO_ENCONTRADO, HttpStatus.NOT_FOUND);
+    public PaisEstadoContext validarEObterPaisEstado(final Integer paisId, final Integer estadoId) {
+        if (!paisRepository.estadoValidoParaPais(paisId, estadoId)) {
+            throw new BusinessException(MessageConstants.ESTADO_INVALIDO_OU_NAO_ENCONTRADO, HttpStatus.BAD_REQUEST);
         }
 
-        Boolean existeEstado = paisRepository.existsEstadoByIdPais(paisId);
-        if(existeEstado && estadoId == null) {
-            throw new BusinessException("Informe o Estado para prosseguir com o pedido.", HttpStatus.BAD_REQUEST);
-        }
+        Pais pais = paisRepository.findById(paisId)
+                .orElseThrow(() -> new BusinessException(
+                        MessageConstants.PAIS_NAO_ENCONTRADO, HttpStatus.BAD_REQUEST));
 
-        Boolean estadoPertenceAoPais = paisRepository.existsEstadoIdAssocidoAoPais(paisId, estadoId);
-        if(!estadoPertenceAoPais && estadoId != null) {
-            throw new BusinessException("O Estado informado não pertence ao País informado.", HttpStatus.BAD_REQUEST);
-        }
+        Estado estado = estadoId != null
+                ? estadoRepository.findById(estadoId).orElseThrow(
+                        () -> new BusinessException(MessageConstants.ESTADO_NAO_ENCONTRADO, HttpStatus.BAD_REQUEST))
+                : null;
+
+        return new PaisEstadoContext(pais, estado);
+
     }
 }
