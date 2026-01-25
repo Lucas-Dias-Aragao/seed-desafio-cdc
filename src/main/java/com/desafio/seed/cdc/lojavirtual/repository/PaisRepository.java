@@ -11,18 +11,20 @@ import java.util.Optional;
 @Repository
 public interface PaisRepository extends JpaRepository<Pais, Integer> {
 
-    @Query("SELECT COUNT(estado) > 0 "
-            + "FROM Pais pais "
-            + "LEFT JOIN Estado estado "
-            + "ON estado.pais.id = pais.id "
-            + "WHERE pais.id = :paisId")
-    Boolean existsEstadoByIdPais(@Param("paisId") final Integer paisId);
+    @Query("""
+        SELECT CASE
+            WHEN NOT EXISTS (
+                SELECT 1 FROM Estado e WHERE e.pais.id = :paisId
+            )
+            AND :estadoId IS NULL
+            THEN true
+            WHEN :estadoId IS NOT NULL AND EXISTS (
+                SELECT 1 FROM Estado e WHERE e.id = :estadoId AND e.pais.id = :paisId
+            )
+            THEN true
+            ELSE false
+        END
+    """)
+    boolean estadoValidoParaPais(@Param("paisId") final Integer paisId, @Param("estadoId") final Integer estadoId);
 
-    @Query("SELECT COUNT(estado) > 0 "
-            + "FROM Pais pais "
-            + "LEFT JOIN Estado estado "
-            + "ON estado.pais.id = pais.id "
-            + "WHERE pais.id = :paisId "
-            + "AND estado.id = :estadoId")
-    Boolean existsEstadoIdAssocidoAoPais(@Param("paisId") Integer paisId, @Param("estadoId") Integer estadoId);
 }

@@ -46,8 +46,4 @@ public class LivroService {
         return livro;
     }
 
-    public Livro getLivroById(final Integer idLivro) {
-        return livroRepository.findById(idLivro)
-                .orElseThrow(() -> new BusinessException(MessageConstants.LIVRO_NAO_ENCONTRADO, HttpStatus.NOT_FOUND));
-    }
 }

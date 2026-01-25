@@ -50,8 +50,6 @@ public class MessageConstants {
 
     public static final String TELEFONE_OBRIGATORIO = "Por favor, informe um telefone para contato.";
 
-    public static final String ESTADO_NAO_INFORMADO = "Informe também o estado.";
-
     public static final String PAIS_NAO_ENCONTRADO = "País não encontrado.";
 
     public static final String VALOR_TOTAL_INVALIDO = "Total do pedido é inválido.";
@@ -61,4 +59,6 @@ public class MessageConstants {
     public static final String QUANTIDADE_INVALIDA = "A quantidade informada é inválida.";
 
     public static final String ESTADO_NAO_ENCONTRADO = "Estado não encontrado.";
+
+    public static final String ESTADO_INVALIDO_OU_NAO_ENCONTRADO = "Estado não informado ou inválido para o país.";
 }
