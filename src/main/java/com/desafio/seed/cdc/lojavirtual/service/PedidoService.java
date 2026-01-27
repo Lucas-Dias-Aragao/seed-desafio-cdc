@@ -1,7 +1,7 @@
 package com.desafio.seed.cdc.lojavirtual.service;
 
 import com.desafio.seed.cdc.lojavirtual.exception.BusinessException;
-import com.desafio.seed.cdc.lojavirtual.model.context.PedidoContext;
+import com.desafio.seed.cdc.lojavirtual.model.context.LivrosPedidoContext;
 import com.desafio.seed.cdc.lojavirtual.model.entity.Livro;
 import com.desafio.seed.cdc.lojavirtual.model.entity.Pedido;
 import com.desafio.seed.cdc.lojavirtual.model.vo.ItemRequestVo;
@@ -30,18 +30,18 @@ public class PedidoService {
 
     public Pedido createPedido(final NovoPedidoRequestVo request) {
 
-        PedidoContext pedidoContext = validaValorTotalPedido(request);
+        LivrosPedidoContext livrosPedidoContext = validaValorTotalPedido(request);
 
         Pedido pedido = Pedido.builder().total(request.getTotal()).build();
         pedido = pedidoRepository.save(pedido);
 
-        itemPedidoService.createItensDoPedido(request, pedido, pedidoContext.getLivrosPorId());
+        itemPedidoService.createItensDoPedido(request, pedido, livrosPedidoContext.getLivrosPorId());
 
         return pedido;
 
     }
 
-    private PedidoContext validaValorTotalPedido(final NovoPedidoRequestVo pedido) {
+    private LivrosPedidoContext validaValorTotalPedido(final NovoPedidoRequestVo pedido) {
 
         List<Integer> idsLivros = pedido.getItens().stream().map(ItemRequestVo::getIdLivro).toList();
 
@@ -59,7 +59,7 @@ public class PedidoService {
             throw new BusinessException("Valor total do pedido inválido", HttpStatus.BAD_REQUEST);
         }
 
-        return new PedidoContext(livros, totalCalculado);
+        return new LivrosPedidoContext(livros);
     }
 
 }

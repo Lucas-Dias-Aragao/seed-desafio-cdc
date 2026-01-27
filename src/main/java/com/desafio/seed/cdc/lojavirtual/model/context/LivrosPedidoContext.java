@@ -4,14 +4,12 @@ import com.desafio.seed.cdc.lojavirtual.model.entity.Livro;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.math.BigDecimal;
 import java.util.Map;
 
 @Getter
 @AllArgsConstructor
-public class PedidoContext {
+public class LivrosPedidoContext {
 
     private final Map<Integer, Livro> livrosPorId;
 
-    private final BigDecimal totalCalculado;
 }
