@@ -23,7 +23,7 @@ spring:
 app:
   url:
     base: "http://localhost:3010"
-    pedido: "/pedido/"
+    pedido: "/detalhe-compra/"
 
 
 

@@ -1,6 +1,7 @@
 package com.desafio.seed.cdc.lojavirtual.service;
 
 import com.desafio.seed.cdc.lojavirtual.model.context.PaisEstadoContext;
+import com.desafio.seed.cdc.lojavirtual.model.dto.DetalheCompraResponse;
 import com.desafio.seed.cdc.lojavirtual.model.entity.Compra;
 import com.desafio.seed.cdc.lojavirtual.model.entity.Estado;
 import com.desafio.seed.cdc.lojavirtual.model.entity.Pais;
@@ -25,4 +26,7 @@ public class CompraService {
 
     }
 
+    public DetalheCompraResponse getDetalheCompra(final Integer idCompra) {
+       return compraRepository.findDetalheCompraById(idCompra);
+    }
 }

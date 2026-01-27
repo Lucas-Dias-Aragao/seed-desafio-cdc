@@ -1,9 +1,29 @@
 package com.desafio.seed.cdc.lojavirtual.repository;
 
+import com.desafio.seed.cdc.lojavirtual.model.dto.DetalheCompraResponse;
+import com.desafio.seed.cdc.lojavirtual.model.dto.LivroDetalheCompraResponse;
 import com.desafio.seed.cdc.lojavirtual.model.entity.Compra;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface CompraRepository extends JpaRepository<Compra, Integer> {
+
+    @Query("SELECT NEW com.desafio.seed.cdc.lojavirtual.model.dto.DetalheCompraResponse("
+            + "compra.nome, compra.sobrenome, compra.email, compra.telefone, compra.logradouro, "
+            + "compra.numero, compra.cep, compra.bairro, compra.complemento, compra.cidade, "
+            + "pais.nome, estado.nome, pedido.total) "
+            + "FROM Compra compra "
+            + "LEFT JOIN compra.pais pais "
+            + "LEFT JOIN compra.estado estado "
+            + "LEFT JOIN compra.pedido pedido "
+            + "WHERE compra.id = :compraId")
+    DetalheCompraResponse findDetalheCompraById(@Param("compraId") Integer compraId);
+
+
+    //private List<LivroDetalheCompraResponse> livro;
 }
