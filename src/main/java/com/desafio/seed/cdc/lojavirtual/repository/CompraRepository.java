@@ -24,6 +24,6 @@ public interface CompraRepository extends JpaRepository<Compra, Integer> {
             + "WHERE compra.id = :compraId")
     DetalheCompraResponse findDetalheCompraById(@Param("compraId") Integer compraId);
 
-
+    // TODO: adicionar nomes livros e quantidades
     //private List<LivroDetalheCompraResponse> livro;
 }

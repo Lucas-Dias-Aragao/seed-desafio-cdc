@@ -24,14 +24,14 @@ public class ProcessaCompraController {
 
     @PostMapping
     public ResponseEntity<?> processaCompraInicial(@Valid @RequestBody NovaCompraRequestVo vo) throws URISyntaxException {
-         Integer idCompra = processaCompraService.processa(vo);
+        Integer idCompra = processaCompraService.processa(vo);
 
-        //TODO: criar endpoint para exibir os detalhes do pedido (CompraDetalheResponseDto)
         String baseUrl = environment.getProperty("app.url.base");
         String pedidoPath = environment.getProperty("app.url.pedido");
         URI uri = new URI(baseUrl + pedidoPath + idCompra);
 
-        return ResponseEntity.created(uri).build();
+        String compraRealizada = "Pedido efetuado: " + idCompra + "\nDetalhes: " + uri;
+        return ResponseEntity.created(uri).body(compraRealizada);
     }
 
 }

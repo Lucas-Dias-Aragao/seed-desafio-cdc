@@ -35,6 +35,7 @@ public class DetalheCompraResponse {
         this.endereçoCompleto = endereco.getEnderecoCompletoFormatado();
 
         this.total = total;
+        //TODO: retornar nomes livros e quantidade (LivroDetalheCompraResponse)
 
     }
 }
