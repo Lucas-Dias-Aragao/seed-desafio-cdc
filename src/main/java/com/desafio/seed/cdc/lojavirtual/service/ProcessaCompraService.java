@@ -4,10 +4,7 @@ import com.desafio.seed.cdc.lojavirtual.model.context.PaisEstadoContext;
 import com.desafio.seed.cdc.lojavirtual.model.entity.Compra;
 import com.desafio.seed.cdc.lojavirtual.model.entity.Pedido;
 import com.desafio.seed.cdc.lojavirtual.model.vo.NovaCompraRequestVo;
-import com.desafio.seed.cdc.lojavirtual.model.vo.NovoPedidoRequestVo;
 import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +20,7 @@ public class ProcessaCompraService {
 
     @Transactional
     public Integer processa(final NovaCompraRequestVo pedidoRequest) {
-        //TODO: validar total do pedido com soma dos itens
+
         PaisEstadoContext paisEstadoContext =
                 paisService.validarEObterPaisEstado(pedidoRequest.getPaisId(), pedidoRequest.getEstadoId());
 
