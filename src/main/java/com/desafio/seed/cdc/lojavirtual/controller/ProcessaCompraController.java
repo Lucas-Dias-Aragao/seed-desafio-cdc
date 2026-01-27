@@ -30,7 +30,7 @@ public class ProcessaCompraController {
         String pedidoPath = environment.getProperty("app.url.pedido");
         URI uri = new URI(baseUrl + pedidoPath + idCompra);
 
-        String compraRealizada = "Pedido efetuado: " + idCompra + "\nDetalhes: " + uri;
+        String compraRealizada = "Compra efetuada: " + idCompra + "\nDetalhes: " + uri;
         return ResponseEntity.created(uri).body(compraRealizada);
     }
 
