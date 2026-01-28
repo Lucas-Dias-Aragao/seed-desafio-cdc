@@ -61,4 +61,9 @@ public class MessageConstants {
     public static final String ESTADO_NAO_ENCONTRADO = "Estado não encontrado.";
 
     public static final String ESTADO_INVALIDO_OU_NAO_ENCONTRADO = "Estado não informado ou inválido para o país.";
+
+    public static final String INFORME_CODIGO_CUPOM = "Por favor, informe um código válido para o cupom.";
+
+    public static final String PERCENTUAL_OBRIGATORIO = "O percentual do cupom é obrigatório.";
+
 }
