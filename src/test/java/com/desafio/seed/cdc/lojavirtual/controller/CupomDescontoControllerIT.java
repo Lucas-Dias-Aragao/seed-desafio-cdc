@@ -3,7 +3,7 @@ package com.desafio.seed.cdc.lojavirtual.controller;
 import com.desafio.seed.cdc.lojavirtual.exception.config.ErrorResponse;
 import com.desafio.seed.cdc.lojavirtual.model.dto.SuccessResponse;
 import com.desafio.seed.cdc.lojavirtual.model.vo.CadastroCupomRequestVo;
-import com.desafio.seed.cdc.lojavirtual.repository.CupomRepository;
+import com.desafio.seed.cdc.lojavirtual.repository.CupomDescontoRepository;
 import com.desafio.seed.cdc.lojavirtual.utils.MessageConstants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -25,10 +25,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-public class CupomControllerIT extends BaseControllerIT {
+public class CupomDescontoControllerIT extends BaseControllerIT {
 
     @Autowired
-    private CupomRepository cupomRepository;
+    private CupomDescontoRepository cupomDescontoRepository;
 
     private static final String URL_CUPOM = "/cupom";
 
@@ -97,7 +97,7 @@ public class CupomControllerIT extends BaseControllerIT {
 
     @BeforeEach
     void beforeEach() {
-        cupomRepository.deleteAll();
+        cupomDescontoRepository.deleteAll();
     }
 
 }
