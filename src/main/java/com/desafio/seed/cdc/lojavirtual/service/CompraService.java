@@ -34,12 +34,13 @@ public class CompraService {
     }
 
     private void adicionaPossivelDesconto(final String codigoCupom, final Compra compra) {
-        CupomDesconto cupom = null;
-
-        if(codigoCupom != null) {
-            cupom = cupomDescontoRepository.getCupomByCodigo(codigoCupom).orElseThrow(
-                    () -> new BusinessException("Cupom não encontrado", HttpStatus.NOT_FOUND));
+        if(codigoCupom == null) {
+            return;
         }
+
+        CupomDesconto cupom = cupomDescontoRepository.getCupomByCodigo(codigoCupom)
+                .orElseThrow(() -> new BusinessException("Cupom não encontrado", HttpStatus.NOT_FOUND));
+
         compra.aplicarCupom(cupom);
 
     }
