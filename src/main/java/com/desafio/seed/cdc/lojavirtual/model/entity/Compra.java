@@ -71,5 +71,9 @@ public class Compra {
     @JoinColumn(name = "ID_PEDIDO", nullable = false)
     private Pedido pedido;
 
+    @ManyToOne
+    @JoinColumn(name = "ID_CUPOM")
+    private CupomDesconto cupom;
+
 
 }

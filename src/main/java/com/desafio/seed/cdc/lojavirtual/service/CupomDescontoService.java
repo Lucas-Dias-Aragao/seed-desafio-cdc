@@ -3,15 +3,15 @@ package com.desafio.seed.cdc.lojavirtual.service;
 import com.desafio.seed.cdc.lojavirtual.model.dto.SuccessResponse;
 import com.desafio.seed.cdc.lojavirtual.model.entity.CupomDesconto;
 import com.desafio.seed.cdc.lojavirtual.model.vo.CadastroCupomRequestVo;
-import com.desafio.seed.cdc.lojavirtual.repository.CupomRepository;
+import com.desafio.seed.cdc.lojavirtual.repository.CupomDescontoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class CupomService {
+public class CupomDescontoService {
 
-    private final CupomRepository cupomRepository;
+    private final CupomDescontoRepository cupomDescontoRepository;
 
 
     public SuccessResponse cadastraCupomDesconto(final CadastroCupomRequestVo vo) {
@@ -20,7 +20,7 @@ public class CupomService {
                 .validade(vo.getValidade())
                 .build();
 
-        novoCupom = cupomRepository.save(novoCupom);
+        novoCupom = cupomDescontoRepository.save(novoCupom);
 
         return new SuccessResponse(novoCupom.getCodigo() + " cadastrado com sucesso!");
     }
