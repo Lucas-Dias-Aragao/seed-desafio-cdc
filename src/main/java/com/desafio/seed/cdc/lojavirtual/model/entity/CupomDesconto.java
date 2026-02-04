@@ -35,4 +35,7 @@ public class CupomDesconto {
     @Column(name = "VALIDADE")
     private LocalDate validade;
 
+    public boolean isValido() {
+        return LocalDate.now().compareTo(this.validade) <= 0;
+    }
 }

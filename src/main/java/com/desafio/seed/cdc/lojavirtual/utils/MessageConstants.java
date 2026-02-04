@@ -66,4 +66,7 @@ public class MessageConstants {
 
     public static final String PERCENTUAL_OBRIGATORIO = "O percentual do cupom é obrigatório.";
 
+    public static final String CUPOM_EXPIRADO = "O cupom informado está expirado.";
+
+    public static final String CUPOM_JA_APLICADO = "Compra com cupom já aplicado.";
 }
