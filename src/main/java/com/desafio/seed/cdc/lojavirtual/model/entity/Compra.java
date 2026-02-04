@@ -1,6 +1,7 @@
 package com.desafio.seed.cdc.lojavirtual.model.entity;
 
 import com.desafio.seed.cdc.lojavirtual.exception.BusinessException;
+import com.desafio.seed.cdc.lojavirtual.utils.MessageConstants;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -83,9 +84,13 @@ public class Compra {
         if(cupom == null) {
             return;
         }
+        
+        if(!cupom.isValido()) {
+            throw new BusinessException(MessageConstants.CUPOM_EXPIRADO, HttpStatus.BAD_REQUEST);
+        }
 
         if(this.cupom != null) {
-            throw new BusinessException("A compra já possui cupom aplicado.", HttpStatus.BAD_REQUEST);
+            throw new BusinessException(MessageConstants.CUPOM_JA_APLICADO, HttpStatus.BAD_REQUEST);
         }
 
         this.cupom = cupom;
