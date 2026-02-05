@@ -1,7 +1,7 @@
 package com.desafio.seed.cdc.lojavirtual.validation.validators;
 
 import com.desafio.seed.cdc.lojavirtual.exception.BusinessException;
-import com.desafio.seed.cdc.lojavirtual.validation.annotations.ExistsCupom;
+import com.desafio.seed.cdc.lojavirtual.validation.annotations.ValidCupom;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import jakarta.validation.ConstraintValidator;
@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus;
 
 import java.time.LocalDate;
 
-public class ValidCupomValidator implements ConstraintValidator<ExistsCupom, String> {
+public class ValidCupomValidator implements ConstraintValidator<ValidCupom, String> {
 
     @Autowired
     private EntityManager manager;

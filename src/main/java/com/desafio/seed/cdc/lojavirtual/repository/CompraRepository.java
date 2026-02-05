@@ -16,11 +16,12 @@ public interface CompraRepository extends JpaRepository<Compra, Integer> {
     @Query("SELECT NEW com.desafio.seed.cdc.lojavirtual.model.dto.DetalheCompraResponse("
             + "compra.nome, compra.sobrenome, compra.email, compra.telefone, compra.logradouro, "
             + "compra.numero, compra.cep, compra.bairro, compra.complemento, compra.cidade, "
-            + "pais.nome, estado.nome, pedido.total) "
+            + "pais.nome, estado.nome, pedido.total, cupom.codigo, cupom.percentual) "
             + "FROM Compra compra "
             + "LEFT JOIN compra.pais pais "
             + "LEFT JOIN compra.estado estado "
             + "LEFT JOIN compra.pedido pedido "
+            + "LEFT JOIN compra.cupom cupom "
             + "WHERE compra.id = :compraId")
     DetalheCompraResponse findDetalheCompraById(@Param("compraId") Integer compraId);
 

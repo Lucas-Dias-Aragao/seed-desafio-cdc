@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = ValidCupomValidator.class)
 @Target({ ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ExistsCupom {
+public @interface ValidCupom {
 
     String message() default "Cupom não encontrado.";
 

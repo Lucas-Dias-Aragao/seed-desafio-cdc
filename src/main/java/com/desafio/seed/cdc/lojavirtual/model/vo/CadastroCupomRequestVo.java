@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Getter
@@ -24,7 +25,7 @@ public class CadastroCupomRequestVo {
 
     @NotNull(message = MessageConstants.PERCENTUAL_OBRIGATORIO)
     @Positive
-    private Integer percentual;
+    private BigDecimal percentual;
 
     @Future(message = MessageConstants.DATA_DEVE_SER_FUTURO)
     private LocalDate validade;
