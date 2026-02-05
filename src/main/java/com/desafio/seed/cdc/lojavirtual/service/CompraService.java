@@ -5,8 +5,6 @@ import com.desafio.seed.cdc.lojavirtual.model.context.PaisEstadoContext;
 import com.desafio.seed.cdc.lojavirtual.model.dto.DetalheCompraResponse;
 import com.desafio.seed.cdc.lojavirtual.model.entity.Compra;
 import com.desafio.seed.cdc.lojavirtual.model.entity.CupomDesconto;
-import com.desafio.seed.cdc.lojavirtual.model.entity.Estado;
-import com.desafio.seed.cdc.lojavirtual.model.entity.Pais;
 import com.desafio.seed.cdc.lojavirtual.model.entity.Pedido;
 import com.desafio.seed.cdc.lojavirtual.model.factory.CompraFactory;
 import com.desafio.seed.cdc.lojavirtual.model.vo.NovaCompraRequestVo;
@@ -15,6 +13,9 @@ import com.desafio.seed.cdc.lojavirtual.repository.CupomDescontoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -46,6 +47,23 @@ public class CompraService {
     }
 
     public DetalheCompraResponse getDetalheCompra(final Integer idCompra) {
-       return compraRepository.findDetalheCompraById(idCompra);
+       DetalheCompraResponse dto = compraRepository.findDetalheCompraById(idCompra);
+
+       dto.setNomeCompletoComprador(formataNomeComprador(dto));
+       dto.setCupomAplicado(Objects.nonNull(dto.getCodigoCupom()));
+       dto.setValorFinalComDesconto(calculaValorFinal(dto.getTotal(), dto.getPercentualDesconto()));
+
+       return dto;
+    }
+
+    private String formataNomeComprador(DetalheCompraResponse dto) {
+        return dto.getNomeComprador() + " " + dto.getSobrenomeComprador();
+    }
+
+    private BigDecimal calculaValorFinal(final BigDecimal total, final BigDecimal percentualDesconto) {
+        if(Objects.isNull(total) || Objects.isNull(percentualDesconto)) return null;
+
+        BigDecimal desconto = percentualDesconto.divide(BigDecimal.valueOf(100)).multiply(total);
+        return total.subtract(desconto);
     }
 }

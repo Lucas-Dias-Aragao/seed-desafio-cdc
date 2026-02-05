@@ -11,6 +11,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 
@@ -30,7 +31,7 @@ public class CupomDesconto {
     private String codigo;
 
     @Column(name = "PERCENTUAL", nullable = false)
-    private Integer percentual;
+    private BigDecimal percentual;
 
     @Column(name = "VALIDADE")
     private LocalDate validade;

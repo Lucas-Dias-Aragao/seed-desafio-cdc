@@ -4,7 +4,7 @@ import com.desafio.seed.cdc.lojavirtual.model.entity.Estado;
 import com.desafio.seed.cdc.lojavirtual.model.entity.Pais;
 import com.desafio.seed.cdc.lojavirtual.utils.MessageConstants;
 import com.desafio.seed.cdc.lojavirtual.validation.annotations.CpfOuCnpj;
-import com.desafio.seed.cdc.lojavirtual.validation.annotations.ExistsCupom;
+import com.desafio.seed.cdc.lojavirtual.validation.annotations.ValidCupom;
 import com.desafio.seed.cdc.lojavirtual.validation.annotations.ExistsId;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
@@ -60,7 +60,7 @@ public class NovaCompraRequestVo {
     @NotNull
     private NovoPedidoRequestVo pedido;
 
-    @ExistsCupom
+    @ValidCupom
     private String codigoCupom;
 
 }

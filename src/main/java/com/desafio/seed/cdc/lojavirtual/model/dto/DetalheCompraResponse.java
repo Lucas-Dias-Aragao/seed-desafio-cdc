@@ -1,16 +1,23 @@
 package com.desafio.seed.cdc.lojavirtual.model.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class DetalheCompraResponse {
 
+    @JsonIgnore
+    private String nomeComprador;
+
+    @JsonIgnore
+    private String sobrenomeComprador;
+
+    @Setter
     private String nomeCompletoComprador;
 
     private String emailComprador;
@@ -21,20 +28,35 @@ public class DetalheCompraResponse {
 
     private BigDecimal total;
 
+    @Setter
+    private Boolean cupomAplicado;
+
+    @Setter
+    private BigDecimal valorFinalComDesconto;
+
+    @JsonIgnore
+    private BigDecimal percentualDesconto;
+
+    @JsonIgnore
+    private String codigoCupom;
+
     private List<LivroDetalheCompraResponse> livro = new ArrayList<>();
 
     public DetalheCompraResponse(final String nomeComprador, final String sobrenomeComprador, final String emailComprador, final String telefoneComprador,
                                  final String logradouro, final String numero, final String cep, final String bairro, final String complemento, final String municipio,
-                                 final String pais, final String estado, final BigDecimal total) {
+                                 final String pais, final String estado, final BigDecimal total, final String codigoCupom, final BigDecimal percentualDesconto) {
 
-        this.nomeCompletoComprador = nomeComprador + " " + sobrenomeComprador;
         this.emailComprador = emailComprador;
         this.telefoneComprador = telefoneComprador;
+        this.nomeComprador = nomeComprador;
+        this.sobrenomeComprador = sobrenomeComprador;
 
         EnderecoResponse endereco = new EnderecoResponse(logradouro, numero, bairro, complemento, cep, municipio, estado, pais);
         this.endereçoCompleto = endereco.getEnderecoCompletoFormatado();
 
+        this.codigoCupom = codigoCupom;
         this.total = total;
+        this.percentualDesconto = percentualDesconto;
         //TODO: retornar nomes livros e quantidade (LivroDetalheCompraResponse)
 
     }
