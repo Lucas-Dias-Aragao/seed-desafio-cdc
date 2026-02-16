@@ -16,7 +16,7 @@ import java.net.URISyntaxException;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/processa-pedido")
+@RequestMapping("/processa-compra")
 public class ProcessaCompraController {
 
     private final ProcessaCompraService processaCompraService;

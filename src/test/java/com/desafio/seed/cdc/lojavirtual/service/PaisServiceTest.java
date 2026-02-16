@@ -1,8 +1,9 @@
 package com.desafio.seed.cdc.lojavirtual.service;
 
 import com.desafio.seed.cdc.lojavirtual.exception.BusinessException;
+import com.desafio.seed.cdc.lojavirtual.model.context.PaisEstadoContext;
+import com.desafio.seed.cdc.lojavirtual.model.entity.Estado;
 import com.desafio.seed.cdc.lojavirtual.model.entity.Pais;
-import com.desafio.seed.cdc.lojavirtual.model.vo.PaisRequestVo;
 import com.desafio.seed.cdc.lojavirtual.repository.PaisRepository;
 import com.desafio.seed.cdc.lojavirtual.utils.MessageConstants;
 import org.junit.jupiter.api.DisplayName;
@@ -11,13 +12,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Optional;
 
@@ -28,8 +24,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-@ActiveProfiles("Test")
-public class PaisServiceTest {
+public class PaisServiceTest extends AbstractServiceTest {
 
     @Mock
     private PaisRepository paisRepository;
@@ -52,6 +47,28 @@ public class PaisServiceTest {
             assertNotNull(resultado);
             assertEquals("Brasil", resultado.getNome());
         }
+
+        @Test
+        @DisplayName("Deve retornar pais e estado com sucesso")
+        void deveRetornarPaisEEstadoComSucesso() {
+            Pais pais = new Pais("Brasil");
+            pais.setId(1);
+
+            Estado estado = new Estado("Sao Paulo", pais);
+            estado.setId(1);
+
+            when(paisRepository.estadoValidoParaPais(pais.getId(), estado.getId())).thenReturn(true);
+            when(paisRepository.findById(pais.getId())).thenReturn(Optional.of(pais));
+            when(estadoRepository.findById(estado.getId())).thenReturn(Optional.of(estado));
+
+            PaisEstadoContext paisEstadoContext = paisService.validarEObterPaisEstado(pais.getId(), estado.getId());
+
+            assertNotNull(paisEstadoContext);
+            assertEquals("Brasil", paisEstadoContext.getPais().getNome());
+            assertEquals("Sao Paulo", paisEstadoContext.getEstado().getNome());
+
+        }
+
     }
 
     @Nested
@@ -71,6 +88,7 @@ public class PaisServiceTest {
             assertEquals(HttpStatus.NOT_FOUND, ex.getStatus());
             verify(paisRepository).findById(99);
         }
+
     }
 
 }
