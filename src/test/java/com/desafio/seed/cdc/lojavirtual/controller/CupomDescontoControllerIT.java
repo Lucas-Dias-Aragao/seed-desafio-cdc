@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Map;
 
@@ -39,7 +40,7 @@ public class CupomDescontoControllerIT extends BaseControllerIT {
         @Test
         @DisplayName("Deve criar cupom se dados forem válidos")
         void deveCriarCupomSeDadosForemValidos() {
-            CadastroCupomRequestVo cupom = builderCupomRequest("CUPOMTESTE", 20, LocalDate.now().plusDays(1));
+            CadastroCupomRequestVo cupom = builderCupomRequest("CUPOMTESTE", BigDecimal.valueOf(20), LocalDate.now().plusDays(1));
 
             HttpEntity<CadastroCupomRequestVo> requestEntity = new HttpEntity<>(cupom);
             ResponseEntity<SuccessResponse> response = restTemplate.exchange(URL_CUPOM, HttpMethod.POST, requestEntity, SuccessResponse.class);
@@ -77,7 +78,7 @@ public class CupomDescontoControllerIT extends BaseControllerIT {
         @Test
         @DisplayName("Não deve criar cupom com data de validade no passado")
         void naoDeveCriarCupomComDataValidadeNoPassado() {
-            CadastroCupomRequestVo cupom = builderCupomRequest("CUPOMNOVO", 10, LocalDate.now().minusDays(1));
+            CadastroCupomRequestVo cupom = builderCupomRequest("CUPOMNOVO", BigDecimal.valueOf(10), LocalDate.now().minusDays(1));
 
             HttpEntity<CadastroCupomRequestVo> requestEntity = new HttpEntity<>(cupom);
             ResponseEntity<ErrorResponse> response = restTemplate.exchange(URL_CUPOM, HttpMethod.POST, requestEntity, ErrorResponse.class);
@@ -91,7 +92,7 @@ public class CupomDescontoControllerIT extends BaseControllerIT {
         }
     }
 
-    private CadastroCupomRequestVo builderCupomRequest(final String codigoCupom, final Integer percentualDesconto, final LocalDate validade) {
+    private CadastroCupomRequestVo builderCupomRequest(final String codigoCupom, final BigDecimal percentualDesconto, final LocalDate validade) {
         return CadastroCupomRequestVo.builder().codigo(codigoCupom).percentual(percentualDesconto).validade(validade).build();
     }
 
