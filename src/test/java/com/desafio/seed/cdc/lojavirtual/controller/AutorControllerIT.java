@@ -88,9 +88,4 @@ public class AutorControllerIT extends BaseControllerIT {
         return AutorRequestVo.builder().nome(nome).email(email).descricao("Autor criado para testes").build();
     }
 
-    @BeforeEach
-    void beforeEach() {
-        autorRepository.deleteAll();
-    }
-
 }

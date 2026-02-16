@@ -23,13 +23,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-public class PaisControllerIT {
+public class PaisControllerIT extends BaseControllerIT {
 
     @Autowired
     protected TestRestTemplate restTemplate;
-
-    @Autowired
-    private PaisRepository paisRepository;
 
     private static final String URL_PAIS = "/pais";
 

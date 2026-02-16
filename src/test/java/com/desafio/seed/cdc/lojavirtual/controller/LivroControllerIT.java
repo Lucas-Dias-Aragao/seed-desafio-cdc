@@ -34,9 +34,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ActiveProfiles("test")
 public class LivroControllerIT extends BaseControllerIT {
 
-    @Autowired
-    protected LivroRepository livroRepository;
-
     private static final String URL_LIVRO = "/livros";
 
     private static final String MSG_AUTOR_NAO_ENCONTRADO = "Não foi encontrado Autor com o id informado.";
@@ -231,31 +228,11 @@ public class LivroControllerIT extends BaseControllerIT {
 
     }
 
-    private Livro createLivro(final String titulo, final String isbn, final Autor autor) {
-        Categoria categoria = createCategoria("Categoria Fake");
-
-        Livro livro = Livro.builder()
-                .titulo(titulo)
-                .resumo("Esse livro deve ser criado com sucesso!!")
-                .sumario(".. sumário válido")
-                .preco(BigDecimal.valueOf(29.90))
-                .qtdPaginas((short) 101)
-                .isbn(isbn)
-                .dataPublicacao(LocalDate.now().plusMonths(1))
-                .autor(autor)
-                .categoria(categoria)
-                .build();
-
-        livro = livroRepository.save(livro);
-        assertNotNull(livro.getId());
-        return livro;
-    }
-
-    @BeforeEach
-    void beforeEach() {
-        livroRepository.deleteAll();
-        autorRepository.deleteAll();
-        categoriaRepository.deleteAll();
-    }
+//    @BeforeEach
+//    void beforeEach() {
+//        livroRepository.deleteAll();
+//        autorRepository.deleteAll();
+//        categoriaRepository.deleteAll();
+//    }
 
 }
