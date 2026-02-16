@@ -25,9 +25,9 @@ public class PaisService {
     private final EstadoRepository estadoRepository;
 
     @Transactional
-    public ResponseEntity<?> createPais(final PaisRequestVo dto) {
+    public ResponseEntity<?> createPais(final PaisRequestVo vo) {
 
-        Pais novoPais = new Pais(dto.getNome());
+        Pais novoPais = new Pais(vo.getNome());
 
         paisRepository.save(novoPais);
 

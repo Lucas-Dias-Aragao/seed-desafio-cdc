@@ -32,14 +32,4 @@ public class EstadoService {
 
     }
 
-    public Estado getEstadoExistente(final Integer estadoId) {
-        Optional<Estado> estado = estadoRepository.findById(estadoId);
-
-            if(!estado.isPresent()) {
-                throw new BusinessException(MessageConstants.ESTADO_NAO_ENCONTRADO, HttpStatus.NOT_FOUND);
-            }
-
-            return estado.get();
-        }
-
 }
