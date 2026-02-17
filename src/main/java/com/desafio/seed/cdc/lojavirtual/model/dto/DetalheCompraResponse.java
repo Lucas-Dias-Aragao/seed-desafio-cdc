@@ -2,6 +2,7 @@ package com.desafio.seed.cdc.lojavirtual.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@NoArgsConstructor
 public class DetalheCompraResponse {
 
     @JsonIgnore
@@ -24,7 +26,7 @@ public class DetalheCompraResponse {
 
     private String telefoneComprador;
 
-    private String endereçoCompleto;
+    private String enderecoCompleto;
 
     private BigDecimal total;
 
@@ -52,7 +54,7 @@ public class DetalheCompraResponse {
         this.sobrenomeComprador = sobrenomeComprador;
 
         EnderecoResponse endereco = new EnderecoResponse(logradouro, numero, bairro, complemento, cep, municipio, estado, pais);
-        this.endereçoCompleto = endereco.getEnderecoCompletoFormatado();
+        this.enderecoCompleto = endereco.getEnderecoCompletoFormatado();
 
         this.codigoCupom = codigoCupom;
         this.total = total;

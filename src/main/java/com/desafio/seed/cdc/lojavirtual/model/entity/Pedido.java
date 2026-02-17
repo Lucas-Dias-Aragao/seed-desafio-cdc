@@ -28,9 +28,11 @@ public class Pedido {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Setter
     @Column(name = "TOTAL_PEDIDO")
     private BigDecimal total;
 
+    @Setter
     @OneToMany(mappedBy = "pedido")
     private List<ItemPedido> itens;
 
