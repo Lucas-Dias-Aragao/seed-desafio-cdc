@@ -228,11 +228,4 @@ public class LivroControllerIT extends BaseControllerIT {
 
     }
 
-//    @BeforeEach
-//    void beforeEach() {
-//        livroRepository.deleteAll();
-//        autorRepository.deleteAll();
-//        categoriaRepository.deleteAll();
-//    }
-
 }

@@ -10,6 +10,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
@@ -18,6 +19,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Entity
 @Builder
+@Getter
 @Table(schema = "lojavirtual_db", name = "TB_ITEM_PEDIDO")
 public class ItemPedido {
 

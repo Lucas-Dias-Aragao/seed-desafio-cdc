@@ -85,9 +85,4 @@ public class PaisControllerIT extends BaseControllerIT {
 
     }
 
-    @BeforeEach
-    void beforeEach() {
-        paisRepository.deleteAll();
-    }
-
 }
