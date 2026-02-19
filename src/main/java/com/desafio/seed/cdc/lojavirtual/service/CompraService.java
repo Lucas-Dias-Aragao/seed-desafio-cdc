@@ -62,10 +62,6 @@ public class CompraService {
     }
 
     private BigDecimal calculaValorFinal(final BigDecimal total, final BigDecimal percentualDesconto) {
-        if(Objects.isNull(total) || Objects.isNull(percentualDesconto)) {
-            ;
-        }
-
         BigDecimal desconto = percentualDesconto.divide(BigDecimal.valueOf(100)).multiply(total);
         return total.subtract(desconto);
     }
