@@ -52,7 +52,7 @@ public class MessageConstants {
 
     public static final String PAIS_NAO_ENCONTRADO = "País não encontrado.";
 
-    public static final String VALOR_TOTAL_INVALIDO = "Total do pedido é inválido.";
+    public static final String VALOR_TOTAL_INVALIDO = "O total do pedido é inválido.";
 
     public static final String DEVE_HAVER_PELO_MENOS_UM_ITEM = "O pedido deve possuir pelo menos um item válido.";
 

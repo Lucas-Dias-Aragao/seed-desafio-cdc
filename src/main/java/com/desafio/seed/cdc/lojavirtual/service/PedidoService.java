@@ -8,6 +8,7 @@ import com.desafio.seed.cdc.lojavirtual.model.vo.ItemRequestVo;
 import com.desafio.seed.cdc.lojavirtual.model.vo.NovoPedidoRequestVo;
 import com.desafio.seed.cdc.lojavirtual.repository.LivroRepository;
 import com.desafio.seed.cdc.lojavirtual.repository.PedidoRepository;
+import com.desafio.seed.cdc.lojavirtual.utils.MessageConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -56,7 +57,7 @@ public class PedidoService {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         if (totalCalculado.compareTo(pedido.getTotal()) != 0) {
-            throw new BusinessException("Valor total do pedido inválido", HttpStatus.BAD_REQUEST);
+            throw new BusinessException(MessageConstants.VALOR_TOTAL_INVALIDO, HttpStatus.BAD_REQUEST);
         }
 
         return new LivrosPedidoContext(livros);
