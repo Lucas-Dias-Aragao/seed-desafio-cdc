@@ -7,15 +7,14 @@ import com.desafio.seed.cdc.lojavirtual.model.entity.Estado;
 import com.desafio.seed.cdc.lojavirtual.model.entity.ItemPedido;
 import com.desafio.seed.cdc.lojavirtual.model.entity.Pais;
 import com.desafio.seed.cdc.lojavirtual.model.entity.Pedido;
-import com.desafio.seed.cdc.lojavirtual.model.vo.NovaCompraRequestVo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -42,7 +41,7 @@ public class DetalheCompraControllerIT extends BaseControllerIT {
             pedido.setTotal(itemPedido.getLivro().getPreco());
             pedidoRepository.saveAndFlush(pedido);
 
-            Compra compra = createCompra(pedido, null);
+            Compra compra = createCompra(pedido, null, true);
 
             String url = BASE_URL_DETALHE_COMPRA + "/" + compra.getId();
             ResponseEntity<DetalheCompraResponse> response = restTemplate.exchange(url, HttpMethod.GET, null, DetalheCompraResponse.class);
@@ -55,6 +54,56 @@ public class DetalheCompraControllerIT extends BaseControllerIT {
 
         }
 
+        @Test
+        @DisplayName("Deve retornar detalhes da compra com sucesso calculando total do pedido com desconto de cupom válido")
+        void retornaDetalhesDaCompraComDescontoDoCupomValido() {
+
+            Pedido pedido = createPedido();
+            ItemPedido itemPedido = createItemPedido((short) 1, pedido);
+
+            pedido.setItens(List.of(itemPedido));
+            pedido.setTotal(itemPedido.getLivro().getPreco());
+            pedidoRepository.saveAndFlush(pedido);
+
+            CupomDesconto cupomDesconto = createCupomDesconto("TESTE", BigDecimal.valueOf(20), LocalDate.now().plusDays(1));
+            Compra compra = createCompra(pedido, cupomDesconto, true);
+
+            String url = BASE_URL_DETALHE_COMPRA + "/" + compra.getId();
+            ResponseEntity<DetalheCompraResponse> response = restTemplate.exchange(url, HttpMethod.GET, null, DetalheCompraResponse.class);
+
+            assertNotNull(response);
+            assertTrue(response.getStatusCode().is2xxSuccessful());
+            assertTrue(response.getBody().getCupomAplicado());
+
+            BigDecimal desconto = cupomDesconto.getPercentual().divide(BigDecimal.valueOf(100)).multiply(pedido.getTotal());
+            BigDecimal valorEsperadoComDesconto = pedido.getTotal().subtract(desconto);
+            assertTrue(valorEsperadoComDesconto.compareTo(response.getBody().getValorFinalComDesconto()) == 0);
+
+        }
+
+        @Test
+        @DisplayName("Deve retornar detalhes da compra com sucesso sem Estado")
+        void retornaDetalhesDaCompraSemEstado() {
+
+            Pedido pedido = createPedido();
+            ItemPedido itemPedido = createItemPedido((short) 1, pedido);
+
+            pedido.setItens(List.of(itemPedido));
+            pedido.setTotal(itemPedido.getLivro().getPreco());
+            pedidoRepository.saveAndFlush(pedido);
+
+            Compra compra = createCompra(pedido, null, false);
+
+            String url = BASE_URL_DETALHE_COMPRA + "/" + compra.getId();
+            ResponseEntity<DetalheCompraResponse> response = restTemplate.exchange(url, HttpMethod.GET, null, DetalheCompraResponse.class);
+
+            assertNotNull(response);
+            assertTrue(response.getStatusCode().is2xxSuccessful());
+            assertTrue(response.getBody().getEnderecoCompleto()
+                    .contains(compra.getCidade() + " - " + compra.getPais().getNome()));
+
+        }
+
     }
 
     @Nested
@@ -63,9 +112,9 @@ public class DetalheCompraControllerIT extends BaseControllerIT {
 
     }
 
-    private Compra createCompra(final Pedido pedido, final CupomDesconto cupomDesconto) {
+    private Compra createCompra(final Pedido pedido, final CupomDesconto cupomDesconto, final Boolean estadoInformado) {
         Pais pais = createPais();
-        Estado estado = createEstado(pais);
+        Estado estado = estadoInformado ? createEstado(pais) : null;
 
         Compra compra = Compra.builder()
                 .email("teste@email.com").nome("Joao").sobrenome("Soares")

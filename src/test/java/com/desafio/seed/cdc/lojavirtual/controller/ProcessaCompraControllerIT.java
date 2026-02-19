@@ -8,6 +8,7 @@ import com.desafio.seed.cdc.lojavirtual.model.entity.Pais;
 import com.desafio.seed.cdc.lojavirtual.model.vo.ItemRequestVo;
 import com.desafio.seed.cdc.lojavirtual.model.vo.NovaCompraRequestVo;
 import com.desafio.seed.cdc.lojavirtual.model.vo.NovoPedidoRequestVo;
+import com.desafio.seed.cdc.lojavirtual.utils.MessageConstants;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -91,6 +92,31 @@ public class ProcessaCompraControllerIT extends BaseControllerIT {
             assertNotNull(response);
             assertTrue(response.getStatusCode().is4xxClientError());
             assertTrue(response.getBody().getMessage().contains("Cupom inválido"));
+
+        }
+
+        @Test
+        @DisplayName("Não deve criar compra aplicando se o pedido for enviado com valor incorreto")
+        void naoDeveCriarCompraSeOValorTotalDoPedidoEstiverIncorreto() {
+            Pais pais = paisRepository.saveAndFlush(new Pais("Brasil"));
+            Estado estado = estadoRepository.saveAndFlush(new Estado("Sao Paulo", pais));
+
+            Livro livro = createLivro();
+            ItemRequestVo item = new ItemRequestVo(livro.getId(), (short) 1);
+
+            NovoPedidoRequestVo pedidoRequest = NovoPedidoRequestVo.builder()
+                    .total(livro.getPreco().add(BigDecimal.TEN))
+                    .itens(List.of(item))
+                    .build();
+
+            NovaCompraRequestVo vo = createNovaCompraRequest(pais.getId(), estado.getId(), pedidoRequest, null);
+
+            HttpEntity<NovaCompraRequestVo> requestEntity = new HttpEntity<>(vo);
+            ResponseEntity<ErrorResponse> response = restTemplate.exchange(BASE_URL_PROCESSA_COMPRA, HttpMethod.POST, requestEntity, ErrorResponse.class);
+
+            assertNotNull(response);
+            assertTrue(response.getStatusCode().is4xxClientError());
+            assertTrue(response.getBody().getMessage().equals(MessageConstants.VALOR_TOTAL_INVALIDO));
 
         }
 

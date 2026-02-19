@@ -10,6 +10,7 @@ import com.desafio.seed.cdc.lojavirtual.model.factory.CompraFactory;
 import com.desafio.seed.cdc.lojavirtual.model.vo.NovaCompraRequestVo;
 import com.desafio.seed.cdc.lojavirtual.repository.CompraRepository;
 import com.desafio.seed.cdc.lojavirtual.repository.CupomDescontoRepository;
+import com.desafio.seed.cdc.lojavirtual.utils.MessageConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -61,7 +62,9 @@ public class CompraService {
     }
 
     private BigDecimal calculaValorFinal(final BigDecimal total, final BigDecimal percentualDesconto) {
-        if(Objects.isNull(total) || Objects.isNull(percentualDesconto)) return null;
+        if(Objects.isNull(total) || Objects.isNull(percentualDesconto)) {
+            ;
+        }
 
         BigDecimal desconto = percentualDesconto.divide(BigDecimal.valueOf(100)).multiply(total);
         return total.subtract(desconto);
