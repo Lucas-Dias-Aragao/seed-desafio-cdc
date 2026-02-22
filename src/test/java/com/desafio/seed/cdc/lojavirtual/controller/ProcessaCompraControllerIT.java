@@ -50,6 +50,24 @@ public class ProcessaCompraControllerIT extends BaseControllerIT {
         }
 
         @Test
+        @DisplayName("Deve criar compra com sucesso, se estado não for informado")
+        void deveCriarCompraComSucessoSeEstadoNaoForInformado() {
+            Pais pais = paisRepository.saveAndFlush(new Pais("Brasil"));
+
+            NovoPedidoRequestVo pedidoRequest = createNovoPedidoRequest();
+
+            NovaCompraRequestVo vo = createNovaCompraRequest(pais.getId(), null, pedidoRequest, null);
+
+            HttpEntity<NovaCompraRequestVo> requestEntity = new HttpEntity<>(vo);
+            ResponseEntity<String> response = restTemplate.exchange(BASE_URL_PROCESSA_COMPRA, HttpMethod.POST, requestEntity, String.class);
+
+            assertNotNull(response);
+            assertTrue(response.getStatusCode().is2xxSuccessful());
+            assertTrue(response.getBody().contains("Compra efetuada"));
+
+        }
+
+        @Test
         @DisplayName("Deve criar compra aplicando cupom com sucesso")
         void deveCriarCompraAplicandoCupomComSucesso() {
             Pais pais = paisRepository.saveAndFlush(new Pais("Brasil"));
