@@ -6,8 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -41,8 +39,6 @@ public class DetalheCompraResponse {
 
     @JsonIgnore
     private String codigoCupom;
-
-    private List<LivroDetalheCompraResponse> livro = new ArrayList<>();
 
     public DetalheCompraResponse(final String nomeComprador, final String sobrenomeComprador, final String emailComprador, final String telefoneComprador,
                                  final String logradouro, final String numero, final String cep, final String bairro, final String complemento, final String municipio,

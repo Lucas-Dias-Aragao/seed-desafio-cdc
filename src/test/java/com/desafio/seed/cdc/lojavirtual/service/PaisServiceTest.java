@@ -20,6 +20,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -77,7 +78,7 @@ public class PaisServiceTest extends AbstractServiceTest {
 
         @Test
         @DisplayName("Deve lançar exception quando pais não existir")
-        void deveRetornarPaisExistenteComSucesso() {
+        void deveLancarExceptionQuandoPaisNaoExistir() {
             when(paisRepository.findById(99)).thenReturn(Optional.empty());
 
             BusinessException ex = assertThrows(BusinessException.class,

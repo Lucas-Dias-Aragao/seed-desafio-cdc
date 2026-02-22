@@ -5,15 +5,8 @@ import com.desafio.seed.cdc.lojavirtual.model.entity.Estado;
 import com.desafio.seed.cdc.lojavirtual.model.entity.Pais;
 import com.desafio.seed.cdc.lojavirtual.model.entity.Pedido;
 import com.desafio.seed.cdc.lojavirtual.model.vo.NovaCompraRequestVo;
-import com.desafio.seed.cdc.lojavirtual.repository.CupomDescontoRepository;
 
 public class CompraFactory {
-
-    private final CupomDescontoRepository cupomDescontoRepository;
-
-    private CompraFactory(CupomDescontoRepository cupomDescontoRepository) {
-        this.cupomDescontoRepository = cupomDescontoRepository;
-    }
 
     public static Compra create(final NovaCompraRequestVo request, final Pedido pedido, final Pais pais,
             final Estado estado) {

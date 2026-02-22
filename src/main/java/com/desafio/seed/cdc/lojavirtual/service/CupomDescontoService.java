@@ -13,7 +13,6 @@ public class CupomDescontoService {
 
     private final CupomDescontoRepository cupomDescontoRepository;
 
-
     public SuccessResponse cadastraCupomDesconto(final CadastroCupomRequestVo vo) {
         CupomDesconto novoCupom = CupomDesconto.builder().codigo(vo.getCodigo())
                 .percentual(vo.getPercentual())
