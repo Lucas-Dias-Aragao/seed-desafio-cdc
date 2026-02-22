@@ -1,14 +1,11 @@
 package com.desafio.seed.cdc.lojavirtual.repository;
 
 import com.desafio.seed.cdc.lojavirtual.model.dto.DetalheCompraResponse;
-import com.desafio.seed.cdc.lojavirtual.model.dto.LivroDetalheCompraResponse;
 import com.desafio.seed.cdc.lojavirtual.model.entity.Compra;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 @Repository
 public interface CompraRepository extends JpaRepository<Compra, Integer> {

@@ -20,10 +20,10 @@ public class CategoriaService {
     private final CategoriaRepository categoriaRepository;
 
     @Transactional
-    public ResponseEntity<?> createCategoria(final CategoriaRequestVo dto) {
-        validateNomeCategoria(dto.getNome());
+    public ResponseEntity<?> createCategoria(final CategoriaRequestVo vo) {
+        validateNomeCategoria(vo.getNome());
 
-        Categoria novaCategoria = new Categoria(dto.getNome());
+        Categoria novaCategoria = new Categoria(vo.getNome());
 
         categoriaRepository.save(novaCategoria);
         return ResponseEntity.ok().build();

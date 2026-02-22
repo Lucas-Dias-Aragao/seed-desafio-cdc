@@ -120,6 +120,33 @@ public class ProcessaCompraControllerIT extends BaseControllerIT {
 
         }
 
+        @Test
+        @DisplayName("Não deve criar compra se o estado não pertencer ao país")
+        void naoDeveCriarCompraSeEstadoNaoPertencerAoPais() {
+            Pais brasil = paisRepository.saveAndFlush(new Pais("Brasil"));
+            Estado estado = estadoRepository.saveAndFlush(new Estado("Sao Paulo", brasil));
+
+            Pais canada = paisRepository.saveAndFlush(new Pais("Canadá"));
+
+            Livro livro = createLivro();
+            ItemRequestVo item = new ItemRequestVo(livro.getId(), (short) 1);
+
+            NovoPedidoRequestVo pedidoRequest = NovoPedidoRequestVo.builder()
+                    .total(livro.getPreco().add(BigDecimal.TEN))
+                    .itens(List.of(item))
+                    .build();
+
+            NovaCompraRequestVo vo = createNovaCompraRequest(canada.getId(), estado.getId(), pedidoRequest, null);
+
+            HttpEntity<NovaCompraRequestVo> requestEntity = new HttpEntity<>(vo);
+            ResponseEntity<ErrorResponse> response = restTemplate.exchange(BASE_URL_PROCESSA_COMPRA, HttpMethod.POST, requestEntity, ErrorResponse.class);
+
+            assertNotNull(response);
+            assertTrue(response.getStatusCode().is4xxClientError());
+            assertTrue(response.getBody().getMessage().equals(MessageConstants.ESTADO_INVALIDO_OU_NAO_ENCONTRADO));
+
+        }
+
     }
 
     private NovoPedidoRequestVo createNovoPedidoRequest() {
